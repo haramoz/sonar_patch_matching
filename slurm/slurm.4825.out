@@ -1,0 +1,518 @@
+python hello-world.py
+>>> Imports:
+#coding=utf-8
+
+try:
+    import numpy as np
+except:
+    pass
+
+try:
+    import random
+except:
+    pass
+
+try:
+    import h5py
+except:
+    pass
+
+try:
+    import tensorflow as tf
+except:
+    pass
+
+try:
+    import matplotlib.pyplot as plt
+except:
+    pass
+
+try:
+    import keras.backend as K
+except:
+    pass
+
+try:
+    from keras.initializers import RandomNormal
+except:
+    pass
+
+try:
+    from keras.layers.core import Dense, Dropout, Activation
+except:
+    pass
+
+try:
+    from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D
+except:
+    pass
+
+try:
+    from keras.layers import Input, concatenate, Concatenate
+except:
+    pass
+
+try:
+    from keras.layers import normalization, BatchNormalization, Lambda
+except:
+    pass
+
+try:
+    from keras.layers import Flatten, Conv2D, MaxPooling2D
+except:
+    pass
+
+try:
+    from keras.regularizers import l2
+except:
+    pass
+
+try:
+    from keras.optimizers import RMSprop, Adam
+except:
+    pass
+
+try:
+    from keras.utils import np_utils
+except:
+    pass
+
+try:
+    from keras.models import Model, Sequential
+except:
+    pass
+
+try:
+    from keras.models import model_from_json
+except:
+    pass
+
+try:
+    import keras.initializers
+except:
+    pass
+
+try:
+    from keras.callbacks import EarlyStopping, ModelCheckpoint
+except:
+    pass
+
+try:
+    from sklearn.metrics import accuracy_score
+except:
+    pass
+
+try:
+    from sklearn.metrics import roc_auc_score
+except:
+    pass
+
+try:
+    from hyperopt import Trials, STATUS_OK, tpe
+except:
+    pass
+
+try:
+    from hyperas import optim
+except:
+    pass
+
+try:
+    from hyperas.distributions import choice, uniform
+except:
+    pass
+
+try:
+    import pickle
+except:
+    pass
+
+>>> Hyperas search space:
+
+def get_space():
+    return {
+        'dense_filter': hp.choice('dense_filter', [2048,1024,512,256]),
+        'dense_filter1': hp.choice('dense_filter1', [1024,512,256]),
+        'dense_filter2': hp.choice('dense_filter2', [1024,512,256,96]),
+        'dropout1': hp.uniform('dropout1', 0,1),
+        'dropout1_1': hp.uniform('dropout1_1', 0,1),
+        'layers': hp.choice('layers', ["one","two","three"]),
+    }
+
+>>> Functions
+   1: def process_data():
+   2:     filename = 'sonar_data'
+   3:     infile = open(filename,'rb')
+   4:     sonar_data_dict = pickle.load(infile)
+   5: 
+   6:     infile.close()
+   7:     x_train1 = sonar_data_dict.get("x_train1")
+   8:     x_train2 = sonar_data_dict.get("x_train2")
+   9:     y_train = sonar_data_dict.get("y_train")
+  10: 
+  11:     x_val1 = sonar_data_dict.get("x_val1")
+  12:     x_val2 = sonar_data_dict.get("x_val2")
+  13:     y_val = sonar_data_dict.get("y_val")
+  14: 
+  15:     x_test1 = sonar_data_dict.get("x_test1")
+  16:     x_test2 = sonar_data_dict.get("x_test2")
+  17:     y_test = sonar_data_dict.get("y_test")
+  18: 
+  19:     y_test_inverted = 1 - y_test
+  20:     y_train_inverted = 1 - y_train
+  21:     y_val_inverted = 1 - y_val
+  22: 
+  23:     return x_train1, x_train2, y_train_inverted, x_val1, x_val2, y_val_inverted, x_test1, x_test2, y_test_inverted
+  24: 
+  25: def create_base_network(input_shape,dense_filter,dense_filter1,dense_filter2,dropout1,dropout2,layers):
+  26:     random_seed = 7
+  27: 
+  28:     model = Input(shape=input_shape)
+  29:     x = Conv2D(16, (3, 3), padding="same",activation='relu', data_format='channels_first',
+  30:                kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+  31:               bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(model)
+  32: 
+  33:     x = Conv2D(16, (3, 3), padding="same", activation='relu',
+  34:                kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+  35:               bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+  36:     x = MaxPooling2D(pool_size=(2, 2),strides=(2, 2))(x)
+  37: 
+  38:     x = Conv2D(32, (3, 3), padding="same", activation='relu',
+  39:                kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+  40:               bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+  41: 
+  42:     x = Conv2D(32, (3, 3), padding="same", activation='relu',
+  43:                kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+  44:               bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+  45: 
+  46:     x = MaxPooling2D(pool_size=(2, 2),strides=(2, 2))(x)
+  47:     x = Flatten()(x)
+  48:     x = Dense(dense_filter, kernel_initializer=keras.initializers.he_normal(seed=random_seed),activation='relu')(x)
+  49:     if layers == "two":
+  50:         x = Dense(dense_filter1, kernel_initializer=keras.initializers.he_normal(seed=random_seed),activation='relu')(x)
+  51:         x = Dropout(dropout1)(x)
+  52:     elif layers == "three":
+  53:         x = Dense(dense_filter2, kernel_initializer=keras.initializers.he_normal(seed=random_seed),activation='relu')(x)
+  54:         x = Dropout(dropout2)(x)
+  55:     return Model(model,x)
+  56: 
+  57: def euclidean_distance(vects):
+  58:     x, y = vects
+  59:     return K.sqrt(K.maximum(K.sum(K.square(x - y), axis=1, keepdims=True), K.epsilon()))
+  60: 
+  61: def eucl_dist_output_shape(shapes):
+  62:     shape1, shape2 = shapes
+  63:     return (shape1[0], 1)
+  64: 
+  65: def contrastive_loss_altered(y_true, y_pred):
+  66:     margin = 1.0
+  67:     return K.mean((1-y_true) * K.square(y_pred) +
+  68:                   y_true * K.square(K.maximum(margin - y_pred, 0)))
+  69: 
+  70: 
+>>> Data
+ 1: 
+ 2: x_train1, x_train2, y_train, x_val1, x_val2, y_val, x_test1, x_test2, y_test = process_data()
+ 3: 
+ 4: 
+ 5: 
+>>> Resulting replaced keras model:
+
+   1: def keras_fmin_fnct(space):
+   2: 
+   3:     epochs = 30
+   4:     input_shape = (1,96,96)
+   5:     patience_ = 1
+   6:     dense_filter = space['dense_filter']
+   7:     dense_filter1 = space['dense_filter1']
+   8:     dense_filter2 = space['dense_filter2']
+   9:     dropout1 = space['dropout1']
+  10:     dropout2 = space['dropout1_1']
+  11:     layers = space['layers']
+  12:     base_network = create_base_network(input_shape,dense_filter,dense_filter1,dense_filter2,dropout1,dropout2,layers)
+  13: 
+  14:     input_a = Input(shape=input_shape)
+  15:     input_b = Input(shape=input_shape)
+  16: 
+  17:     processed_a = base_network(input_a)
+  18:     processed_b = base_network(input_b)
+  19: 
+  20:     opt = Adam(lr=1e-5,decay=1e-3)
+  21: 
+  22:     distance = Lambda(euclidean_distance,
+  23:                       output_shape=eucl_dist_output_shape)([processed_a, processed_b])
+  24:     model = Model([input_a, input_b], distance)
+  25:     model.compile(loss=contrastive_loss_altered, optimizer=opt, metrics=["accuracy"])
+  26: 
+  27: 
+  28:     es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1)
+  29:     checkpointer = ModelCheckpoint(filepath='keras_weights.hdf5',
+  30:                                    verbose=1,
+  31:                                    save_best_only=True)
+  32:     model.fit([x_train1, x_train2],y_train,
+  33:           batch_size=64,
+  34:           epochs=epochs,
+  35:           validation_data=([x_val1,x_val2], y_val),
+  36:           callbacks=[es],
+  37:           verbose=0)
+  38: 
+  39:     score, acc = model.evaluate([x_test1, x_test2], y_test,verbose=0)
+  40:     print('Test accuracy:', acc)
+  41:     pred = model.predict([x_test1, x_test2],verbose=0)
+  42:     auc_score = roc_auc_score(y_test,pred)
+  43:     threshold = .7
+  44:     pred_scores2 = (pred>threshold).astype(int) 
+  45: 
+  46:     test_acc2 = accuracy_score(y_test,pred_scores2)
+  47:     print("score new .7 ------------- >",np.round(test_acc2,3))
+  48:     threshold = .6                 
+  49:     pred_scores2 = (pred>threshold).astype(int)
+  50: 
+  51:     test_acc2 = accuracy_score(y_test,pred_scores2)
+  52:     print("score new .6 ----------- >",np.round(test_acc2,3))
+  53: 
+  54:     print("auc_score ------------------ ",np.round(auc_score,4))
+  55:     return {'loss': -auc_score, 'status': STATUS_OK, 'model': model}
+  56: 
+Epoch 00012: early stopping
+Test accuracy: 0.8518817204301076
+score new .7 ------------- > 0.769
+score new .6 ----------- > 0.828
+auc_score ------------------  0.9304
+best run {'dense_filter': 1, 'dense_filter1': 1, 'dense_filter2': 1, 'dropout1': 0.692539034315719, 'dropout1_1': 0.21280043312755825, 'layers': 2}
+Evalutation of best performing model:
+
+  32/7440 [..............................] - ETA: 11s
+  64/7440 [..............................] - ETA: 11s
+  96/7440 [..............................] - ETA: 11s
+ 128/7440 [..............................] - ETA: 11s
+ 160/7440 [..............................] - ETA: 11s
+ 192/7440 [..............................] - ETA: 11s
+ 224/7440 [..............................] - ETA: 11s
+ 288/7440 [>.............................] - ETA: 11s
+ 320/7440 [>.............................] - ETA: 11s
+ 352/7440 [>.............................] - ETA: 11s
+ 384/7440 [>.............................] - ETA: 11s
+ 416/7440 [>.............................] - ETA: 11s
+ 448/7440 [>.............................] - ETA: 11s
+ 480/7440 [>.............................] - ETA: 11s
+ 512/7440 [=>............................] - ETA: 11s
+ 544/7440 [=>............................] - ETA: 10s
+ 576/7440 [=>............................] - ETA: 10s
+ 608/7440 [=>............................] - ETA: 10s
+ 640/7440 [=>............................] - ETA: 10s
+ 672/7440 [=>............................] - ETA: 10s
+ 704/7440 [=>............................] - ETA: 10s
+ 736/7440 [=>............................] - ETA: 10s
+ 768/7440 [==>...........................] - ETA: 10s
+ 800/7440 [==>...........................] - ETA: 10s
+ 864/7440 [==>...........................] - ETA: 10s
+ 896/7440 [==>...........................] - ETA: 10s
+ 928/7440 [==>...........................] - ETA: 10s
+ 960/7440 [==>...........................] - ETA: 10s
+ 992/7440 [===>..........................] - ETA: 10s
+1024/7440 [===>..........................] - ETA: 10s
+1056/7440 [===>..........................] - ETA: 10s
+1088/7440 [===>..........................] - ETA: 10s
+1120/7440 [===>..........................] - ETA: 10s
+1152/7440 [===>..........................] - ETA: 10s
+1184/7440 [===>..........................] - ETA: 9s 
+1248/7440 [====>.........................] - ETA: 9s
+1280/7440 [====>.........................] - ETA: 9s
+1312/7440 [====>.........................] - ETA: 9s
+1344/7440 [====>.........................] - ETA: 9s
+1376/7440 [====>.........................] - ETA: 9s
+1408/7440 [====>.........................] - ETA: 9s
+1440/7440 [====>.........................] - ETA: 9s
+1472/7440 [====>.........................] - ETA: 9s
+1504/7440 [=====>........................] - ETA: 9s
+1536/7440 [=====>........................] - ETA: 9s
+1568/7440 [=====>........................] - ETA: 9s
+1600/7440 [=====>........................] - ETA: 9s
+1632/7440 [=====>........................] - ETA: 9s
+1664/7440 [=====>........................] - ETA: 9s
+1696/7440 [=====>........................] - ETA: 9s
+1728/7440 [=====>........................] - ETA: 9s
+1760/7440 [======>.......................] - ETA: 9s
+1792/7440 [======>.......................] - ETA: 9s
+1824/7440 [======>.......................] - ETA: 9s
+1856/7440 [======>.......................] - ETA: 8s
+1888/7440 [======>.......................] - ETA: 8s
+1920/7440 [======>.......................] - ETA: 8s
+1952/7440 [======>.......................] - ETA: 8s
+1984/7440 [=======>......................] - ETA: 8s
+2016/7440 [=======>......................] - ETA: 8s
+2048/7440 [=======>......................] - ETA: 8s
+2080/7440 [=======>......................] - ETA: 8s
+2112/7440 [=======>......................] - ETA: 8s
+2144/7440 [=======>......................] - ETA: 8s
+2176/7440 [=======>......................] - ETA: 8s
+2208/7440 [=======>......................] - ETA: 8s
+2240/7440 [========>.....................] - ETA: 8s
+2272/7440 [========>.....................] - ETA: 8s
+2304/7440 [========>.....................] - ETA: 8s
+2336/7440 [========>.....................] - ETA: 8s
+2368/7440 [========>.....................] - ETA: 8s
+2400/7440 [========>.....................] - ETA: 8s
+2432/7440 [========>.....................] - ETA: 8s
+2464/7440 [========>.....................] - ETA: 8s
+2528/7440 [=========>....................] - ETA: 7s
+2560/7440 [=========>....................] - ETA: 7s
+2592/7440 [=========>....................] - ETA: 7s
+2624/7440 [=========>....................] - ETA: 7s
+2656/7440 [=========>....................] - ETA: 7s
+2688/7440 [=========>....................] - ETA: 7s
+2720/7440 [=========>....................] - ETA: 7s
+2752/7440 [==========>...................] - ETA: 7s
+2784/7440 [==========>...................] - ETA: 7s
+2816/7440 [==========>...................] - ETA: 7s
+2848/7440 [==========>...................] - ETA: 7s
+2880/7440 [==========>...................] - ETA: 7s
+2912/7440 [==========>...................] - ETA: 7s
+2944/7440 [==========>...................] - ETA: 7s
+2976/7440 [===========>..................] - ETA: 7s
+3008/7440 [===========>..................] - ETA: 7s
+3040/7440 [===========>..................] - ETA: 7s
+3072/7440 [===========>..................] - ETA: 7s
+3104/7440 [===========>..................] - ETA: 7s
+3136/7440 [===========>..................] - ETA: 6s
+3168/7440 [===========>..................] - ETA: 6s
+3200/7440 [===========>..................] - ETA: 6s
+3232/7440 [============>.................] - ETA: 6s
+3264/7440 [============>.................] - ETA: 6s
+3296/7440 [============>.................] - ETA: 6s
+3328/7440 [============>.................] - ETA: 6s
+3360/7440 [============>.................] - ETA: 6s
+3392/7440 [============>.................] - ETA: 6s
+3424/7440 [============>.................] - ETA: 6s
+3456/7440 [============>.................] - ETA: 6s
+3488/7440 [=============>................] - ETA: 6s
+3520/7440 [=============>................] - ETA: 6s
+3552/7440 [=============>................] - ETA: 6s
+3584/7440 [=============>................] - ETA: 6s
+3616/7440 [=============>................] - ETA: 6s
+3648/7440 [=============>................] - ETA: 6s
+3680/7440 [=============>................] - ETA: 6s
+3712/7440 [=============>................] - ETA: 6s
+3744/7440 [==============>...............] - ETA: 5s
+3776/7440 [==============>...............] - ETA: 5s
+3808/7440 [==============>...............] - ETA: 5s
+3840/7440 [==============>...............] - ETA: 5s
+3872/7440 [==============>...............] - ETA: 5s
+3904/7440 [==============>...............] - ETA: 5s
+3936/7440 [==============>...............] - ETA: 5s
+3968/7440 [===============>..............] - ETA: 5s
+4000/7440 [===============>..............] - ETA: 5s
+4032/7440 [===============>..............] - ETA: 5s
+4064/7440 [===============>..............] - ETA: 5s
+4096/7440 [===============>..............] - ETA: 5s
+4128/7440 [===============>..............] - ETA: 5s
+4160/7440 [===============>..............] - ETA: 5s
+4192/7440 [===============>..............] - ETA: 5s
+4224/7440 [================>.............] - ETA: 5s
+4256/7440 [================>.............] - ETA: 5s
+4288/7440 [================>.............] - ETA: 5s
+4320/7440 [================>.............] - ETA: 5s
+4352/7440 [================>.............] - ETA: 5s
+4384/7440 [================>.............] - ETA: 4s
+4416/7440 [================>.............] - ETA: 4s
+4448/7440 [================>.............] - ETA: 4s
+4480/7440 [=================>............] - ETA: 4s
+4512/7440 [=================>............] - ETA: 4s
+4544/7440 [=================>............] - ETA: 4s
+4576/7440 [=================>............] - ETA: 4s
+4608/7440 [=================>............] - ETA: 4s
+4640/7440 [=================>............] - ETA: 4s
+4672/7440 [=================>............] - ETA: 4s
+4704/7440 [=================>............] - ETA: 4s
+4736/7440 [==================>...........] - ETA: 4s
+4768/7440 [==================>...........] - ETA: 4s
+4800/7440 [==================>...........] - ETA: 4s
+4832/7440 [==================>...........] - ETA: 4s
+4864/7440 [==================>...........] - ETA: 4s
+4896/7440 [==================>...........] - ETA: 4s
+4928/7440 [==================>...........] - ETA: 4s
+4960/7440 [===================>..........] - ETA: 4s
+5024/7440 [===================>..........] - ETA: 3s
+5056/7440 [===================>..........] - ETA: 3s
+5088/7440 [===================>..........] - ETA: 3s
+5120/7440 [===================>..........] - ETA: 3s
+5152/7440 [===================>..........] - ETA: 3s
+5184/7440 [===================>..........] - ETA: 3s
+5216/7440 [====================>.........] - ETA: 3s
+5248/7440 [====================>.........] - ETA: 3s
+5280/7440 [====================>.........] - ETA: 3s
+5312/7440 [====================>.........] - ETA: 3s
+5344/7440 [====================>.........] - ETA: 3s
+5408/7440 [====================>.........] - ETA: 3s
+5440/7440 [====================>.........] - ETA: 3s
+5472/7440 [=====================>........] - ETA: 3s
+5504/7440 [=====================>........] - ETA: 3s
+5536/7440 [=====================>........] - ETA: 3s
+5568/7440 [=====================>........] - ETA: 3s
+5600/7440 [=====================>........] - ETA: 2s
+5632/7440 [=====================>........] - ETA: 2s
+5664/7440 [=====================>........] - ETA: 2s
+5696/7440 [=====================>........] - ETA: 2s
+5728/7440 [======================>.......] - ETA: 2s
+5760/7440 [======================>.......] - ETA: 2s
+5792/7440 [======================>.......] - ETA: 2s
+5824/7440 [======================>.......] - ETA: 2s
+5856/7440 [======================>.......] - ETA: 2s
+5888/7440 [======================>.......] - ETA: 2s
+5920/7440 [======================>.......] - ETA: 2s
+5952/7440 [=======================>......] - ETA: 2s
+5984/7440 [=======================>......] - ETA: 2s
+6016/7440 [=======================>......] - ETA: 2s
+6048/7440 [=======================>......] - ETA: 2s
+6080/7440 [=======================>......] - ETA: 2s
+6112/7440 [=======================>......] - ETA: 2s
+6144/7440 [=======================>......] - ETA: 2s
+6176/7440 [=======================>......] - ETA: 2s
+6208/7440 [========================>.....] - ETA: 1s
+6240/7440 [========================>.....] - ETA: 1s
+6272/7440 [========================>.....] - ETA: 1s
+6304/7440 [========================>.....] - ETA: 1s
+6336/7440 [========================>.....] - ETA: 1s
+6368/7440 [========================>.....] - ETA: 1s
+6400/7440 [========================>.....] - ETA: 1s
+6432/7440 [========================>.....] - ETA: 1s
+6464/7440 [=========================>....] - ETA: 1s
+6496/7440 [=========================>....] - ETA: 1s
+6528/7440 [=========================>....] - ETA: 1s
+6560/7440 [=========================>....] - ETA: 1s
+6592/7440 [=========================>....] - ETA: 1s
+6624/7440 [=========================>....] - ETA: 1s
+6656/7440 [=========================>....] - ETA: 1s
+6688/7440 [=========================>....] - ETA: 1s
+6720/7440 [==========================>...] - ETA: 1s
+6752/7440 [==========================>...] - ETA: 1s
+6784/7440 [==========================>...] - ETA: 1s
+6816/7440 [==========================>...] - ETA: 1s
+6848/7440 [==========================>...] - ETA: 0s
+6880/7440 [==========================>...] - ETA: 0s
+6912/7440 [==========================>...] - ETA: 0s
+6944/7440 [===========================>..] - ETA: 0s
+6976/7440 [===========================>..] - ETA: 0s
+7008/7440 [===========================>..] - ETA: 0s
+7040/7440 [===========================>..] - ETA: 0s
+7072/7440 [===========================>..] - ETA: 0s
+7104/7440 [===========================>..] - ETA: 0s
+7136/7440 [===========================>..] - ETA: 0s
+7168/7440 [===========================>..] - ETA: 0s
+7200/7440 [============================>.] - ETA: 0s
+7232/7440 [============================>.] - ETA: 0s
+7264/7440 [============================>.] - ETA: 0s
+7296/7440 [============================>.] - ETA: 0s
+7328/7440 [============================>.] - ETA: 0s
+7360/7440 [============================>.] - ETA: 0s
+7392/7440 [============================>.] - ETA: 0s
+7424/7440 [============================>.] - ETA: 0s
+7440/7440 [==============================] - 12s 2ms/step
+[0.11758564086530798, 0.8518817204301076]
+val roc_auc_score 0.930
+score new --------------- > 0.769
+----------trials-------------
+{'dense_filter': [1], 'dense_filter1': [1], 'dense_filter2': [1], 'dropout1': [0.692539034315719], 'dropout1_1': [0.21280043312755825], 'layers': [2]} -0.9303595791420973
+python densenet_siamese_best_run.py
+python hyperas_densenet.py
