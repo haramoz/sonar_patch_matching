@@ -111,7 +111,7 @@ def create_base_network():
     '''    
     batch_size = 8
     nb_classes = 2
-    epochs = 100
+    epochs = 30
 
     img_rows, img_cols = 96, 96
     img_channels = 1
@@ -120,10 +120,10 @@ def create_base_network():
     # Parameters for the DenseNet model builder
     img_dim = (img_channels, img_rows, img_cols) if K.image_data_format() == 'channels_first' else (img_rows, img_cols, img_channels)
 
-    depth = 40
+    depth = 13
     nb_dense_block = 1
-    growth_rate = 12
-    nb_filter = 16
+    growth_rate = 6
+    nb_filter = 18
     dropout_rate = 0.0  # 0.0 for data augmentation
     classes = 2 #1
 
@@ -169,9 +169,10 @@ def create_base_network():
     return net
 
 def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test2, y_test):
-    epochs = 3
+    epochs = 30
     input_shape = (1,96,96)
     lr = 1E-2
+    patience_ = 1    
 
     base_network = create_base_network()
     use_distance = False
@@ -184,11 +185,11 @@ def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test
 
     combined_features = concatenate([processed_a, processed_b], name = 'merge_features')
     """combined_features = Dense(1024, kernel_initializer=keras.initializers.he_normal(),activation='relu')(combined_features)
-    combined_features = Dropout(dropout)(combined_features)
+    combined_features = Dropout(dropout)(combined_features)"""
     combined_features = Dense(1024, kernel_initializer=keras.initializers.he_normal())(combined_features)    
     combined_features = Activation('relu')(combined_features)
     combined_features = BatchNormalization()(combined_features)
-    #combined_features = Dropout(0.5)(combined_features)"""
+    #combined_features = Dropout(0.5)(combined_features)
     combined_features = Dense(1, activation = 'sigmoid')(combined_features)
 
     model = Model(inputs = [input_a, input_b], outputs = [combined_features], name = 'model')
@@ -200,8 +201,8 @@ def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test
 
     #model.compile(loss=binary_crossentropy, optimizer=opt, metrics=['accuracy'])
 
-    """es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1)
-    checkpointer = ModelCheckpoint(filepath='keras_weights.hdf5',
+    es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1)
+    """checkpointer = ModelCheckpoint(filepath='keras_weights.hdf5',
                                    verbose=1,
                                    save_best_only=True)"""
 
@@ -209,7 +210,7 @@ def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test
           batch_size=64,
           epochs=epochs,
           validation_data=([x_val1,x_val2], y_val),
-          #callbacks=[es],
+          callbacks=[es],
           verbose=1)
 
     score, acc = model.evaluate([x_test1, x_test2], y_test)
