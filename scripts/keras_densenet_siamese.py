@@ -13,7 +13,8 @@ from keras.datasets import cifar10
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Dense
-from keras_contrib.applications import DenseNet
+#from keras_contrib.applications import DenseNet
+import keras_densenet
 
 import keras.backend as K
 from keras.initializers import RandomNormal
@@ -120,59 +121,38 @@ def create_base_network():
     # Parameters for the DenseNet model builder
     img_dim = (img_channels, img_rows, img_cols) if K.image_data_format() == 'channels_first' else (img_rows, img_cols, img_channels)
 
-    depth = 13
-    nb_dense_block = 1
+    depth = 7
+    nb_dense_block = 2
     growth_rate = 6
-    nb_filter = 18
+    nb_filter = 16
     dropout_rate = 0.0  # 0.0 for data augmentation
     classes = 2 #1
 
-    """input_shape=None,
-             depth=40,
-             nb_dense_block=3,
-             growth_rate=12,
-             nb_filter=-1,
-             nb_layers_per_block=-1,
-             bottleneck=False,
-             reduction=0.0,
-             dropout_rate=0.0,
-             weight_decay=1e-4,
-             subsample_initial_block=False,
-             include_top=True,
-             weights=None,
-             input_tensor=None,
-             pooling=None,
-             classes=10,
-             activation='softmax',
-             transition_pooling='avg'"""
+    """input_shape=None, depth=40, nb_dense_block=3,growth_rate=12, nb_filter=-1,nb_layers_per_block=-1,
+             bottleneck=False, reduction=0.0, dropout_rate=0.0, weight_decay=1e-4,subsample_initial_block=False,
+             include_top=True,weights=None,input_tensor=None,pooling=None,classes=10,
+             activation='softmax',transition_pooling='avg'"""
 
-    net = DenseNet(depth=depth, nb_dense_block=nb_dense_block,
+    net = keras_densenet.DenseNet(depth=depth, nb_dense_block=nb_dense_block,
                      growth_rate=growth_rate, nb_filter=nb_filter,
                      dropout_rate=dropout_rate,
                      input_shape=img_dim,
                      include_top=False,
                      classes=classes,
-                     pooling='avg',
+                     pooling='avg',bottleneck=True,reduction=0.5,
                      #activation='sigmoid'
                      weights=None)
 
 
-    """net = densenet.DenseNet(nb_classes,
-                  img_dim,
-                  depth,
-                  nb_dense_block,
-                  growth_rate,
-                  nb_filter,
-                  dropout_rate=dropout1,
-                  weight_decay=weight_decay)"""
     
     return net
 
 def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test2, y_test):
-    epochs = 30
+    epochs = 15
     input_shape = (1,96,96)
-    lr = 1E-2
-    patience_ = 1    
+    lr = 1E-3
+    patience_ = 3    
+    batch_size = 4
 
     base_network = create_base_network()
     use_distance = False
@@ -186,7 +166,8 @@ def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test
     combined_features = concatenate([processed_a, processed_b], name = 'merge_features')
     """combined_features = Dense(1024, kernel_initializer=keras.initializers.he_normal(),activation='relu')(combined_features)
     combined_features = Dropout(dropout)(combined_features)"""
-    combined_features = Dense(1024, kernel_initializer=keras.initializers.he_normal())(combined_features)    
+
+    combined_features = Dense(512, kernel_initializer=keras.initializers.he_normal())(combined_features)    
     combined_features = Activation('relu')(combined_features)
     combined_features = BatchNormalization()(combined_features)
     #combined_features = Dropout(0.5)(combined_features)
@@ -201,16 +182,17 @@ def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test
 
     #model.compile(loss=binary_crossentropy, optimizer=opt, metrics=['accuracy'])
 
-    es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1)
-    """checkpointer = ModelCheckpoint(filepath='keras_weights.hdf5',
-                                   verbose=1,
-                                   save_best_only=True)"""
+    es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1,restore_best_weights=True)
+    checkpointer = ModelCheckpoint(filepath='keras_densenet_siamese_2509_weights.hdf5', verbose=2, save_best_only=True)
+    
+    lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=np.sqrt(0.1),
+                               cooldown=0, patience=5, min_lr=0.5e-6,verbose=1)
 
     model.fit([x_train1, x_train2],y_train,
-          batch_size=64,
+          batch_size=batch_size,
           epochs=epochs,
           validation_data=([x_val1,x_val2], y_val),
-          callbacks=[es],
+          callbacks=[es,lr_reducer],
           verbose=1)
 
     score, acc = model.evaluate([x_test1, x_test2], y_test)
@@ -231,7 +213,8 @@ def fit_model(x_train1, x_train2, y_train,x_val1, x_val2, y_val, x_test1, x_test
 
     lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=np.sqrt(0.1),
                                    cooldown=0, patience=10, min_lr=0.5e-6)
-    early_stopper = EarlyStopping(monitor='val_acc', min_delta=1e-4, patience=20)
+    early_stopper = EarlyStopping(monitor='val_acc', min_delta=1e-4, patience=20, restore_best_weights=True)
+
     model_checkpoint = ModelCheckpoint(weights_file, monitor='val_acc', save_best_only=True,
                                        save_weights_only=True, mode='auto')
 
