@@ -55,18 +55,18 @@ def process_data():
     return X_train,y_train,X_val,y_val
 
 def fit_model(X_train,y_train,X_val,y_val):
-    epochs = 10
+    epochs = 20
     #input_shape = (1,96,96)
-    patience_ = 3
+    patience_ = 5
     #dense_filter = 512
     #dropout = 0.76
     dropout1 = None
-    depth = 13
-    nb_dense_block = 1
+    depth = 13 #40
+    nb_dense_block = 3
     nb_filter = 18
     growth_rate = 12
     weight_decay = 1E-4
-    lr = 3E-3
+    lr = 3E-5
     
     nb_classes = 1
     img_dim = (2,96,96) 
@@ -77,7 +77,7 @@ def fit_model(X_train,y_train,X_val,y_val):
                  growth_rate=growth_rate, nb_filter=nb_filter,
                  dropout_rate=dropout1,activation='sigmoid',
                  input_shape=img_dim,include_top=True,
-                 bottleneck=False,reduction=0.0,
+                 bottleneck=True,reduction=0.5,
                  classes=nb_classes,pooling='avg',
                  weights=None)
     
@@ -86,19 +86,20 @@ def fit_model(X_train,y_train,X_val,y_val):
     opt = Adam(lr=lr)
     model.compile(loss=binary_crossentropy, optimizer=opt, metrics=['accuracy'])
 
-    es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1,restore_best_weights=True)
+    es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1)
+    #es = EarlyStopping(monitor='val_acc', patience=patience_,verbose=1,restore_best_weights=True)
     checkpointer = ModelCheckpoint(filepath='keras_densenet_simple_weights.hdf5',
                                    verbose=1,
                                    save_best_only=True)
 
     lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=np.sqrt(0.1),
-                               cooldown=0, patience=5, min_lr=0.5e-6,verbose=1)
+                               cooldown=0, patience=3, min_lr=0.5e-6,verbose=1)
     model.fit(X_train,y_train,
-          batch_size=8,
+          batch_size=64,
           epochs=epochs,
           callbacks=[es,lr_reducer],
           validation_data=(X_val,y_val),
-          verbose=1)
+          verbose=2)
 
     score, acc = model.evaluate(X_val, y_val)
     print('Test accuracy:', acc)
@@ -120,16 +121,16 @@ if __name__ == '__main__':
     
     X_train,y_train,X_val,y_val = process_data()
     scores = []
-    for i in range(2):
+    for i in range(10):
         score,model = fit_model(X_train,y_train,X_val,y_val)
      
         score = np.round(score,3)
         scores.append(score)
         if(score > .93):
             model_json = model.to_json()
-            with open("model-12-9-6pm.json", "w") as json_file:
+            with open("model-27-9-6pm.json", "w") as json_file:
                 json_file.write(model_json)
-            model.save_weights("model-12-9-6pm.h5")
+            model.save_weights("model-27-9-6pm.h5")
             print("Saved model to disk")
             del model
 
