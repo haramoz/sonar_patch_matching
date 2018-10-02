@@ -43,7 +43,7 @@ def create_model():
 def process_data():
     random_seed = 7
 
-    f = h5py.File('matchedImagesSplitClasses-2017-02-24-17-39-44-96-96-split-val0.15-tr0.7-tst0.15.hdf5','r')
+    f = h5py.File('/home/amalli2s/thesis/keras/matchedImagesSplitClasses-2017-02-24-17-39-44-96-96-split-val0.15-tr0.7-tst0.15.hdf5','r')
     X_train = f['X_train'].value
     y_train = f['y_train'].value
     X_test = f['X_val'].value
@@ -54,19 +54,21 @@ def process_data():
     return X_train,y_train,X_test,y_test
 # Function to create model, required for KerasClassifier
 def create_model():
-    epochs = 40
+    epochs = 4
     es_patience = 7
     lr_patience = 5
     dropout = None
-    depth = {{choice([7,13,19,25,31])}}
-    nb_dense_block = {{choice([2,3])}}
+    #depth = {{choice([7,13,19,25,31])}}
+    #nb_dense_block = {{choice([2,3])}}
+    depth=7
+    nb_dense_block=2
     nb_filter = 16
-    growth_rate = {{choice([6,10,14,18])}}
+    #growth_rate = {{choice([6,10,14,18])}}
+    growth_rate = 10
     bn = True
     reduction_ = 0.5
     bs = 32
-    lr = 1E-4 #########################################################CHange file name##########################################
-    weight_file = 'keras_densenet_simple_wt_29Sept_2200.h5'
+    lr = 1E-3 #########################################################CHange file name##########################################
     nb_classes = 1
     img_dim = (2,96,96) 
     n_channels = 2 
@@ -115,7 +117,7 @@ def create_model():
 
 # fix random seed for reproducibility
 seed = 7
-numpy.random.seed(seed)
+np.random.seed(seed)
 # load dataset
 X_train,y_train,X_test,y_test = process_data()
 
@@ -127,7 +129,7 @@ epochs = [10,20]
 optimizer = ['RMSprop', 'Adam']
 #param_grid = dict(optimizer=optimizer)
 param_grid = dict(batch_size=batch_size, epochs=epochs)
-grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=1,verbose=2)
+grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=1,verbose=1)
 
 grid_result = grid.fit(X_train,y_train)
 # summarize results
