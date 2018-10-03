@@ -1,0 +1,255 @@
+python keras_densenet_siamese.py
+python keras_densenet_simple.py
+python keras_dn_simple_multigpu.py -g 4
+python hyperas_dn_lr.py -n 40
+no of  evals 40
+>>> Imports:
+#coding=utf-8
+
+try:
+    import numpy as np
+except:
+    pass
+
+try:
+    import random
+except:
+    pass
+
+try:
+    import h5py
+except:
+    pass
+
+try:
+    import tensorflow as tf
+except:
+    pass
+
+try:
+    import matplotlib.pyplot as plt
+except:
+    pass
+
+try:
+    import keras.backend as K
+except:
+    pass
+
+try:
+    from keras.initializers import RandomNormal
+except:
+    pass
+
+try:
+    from keras.layers.core import Dense, Dropout, Activation
+except:
+    pass
+
+try:
+    from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D
+except:
+    pass
+
+try:
+    from keras.layers import Input, concatenate, Concatenate
+except:
+    pass
+
+try:
+    from keras.layers import normalization, BatchNormalization, Lambda
+except:
+    pass
+
+try:
+    from keras.layers import Flatten, Conv2D, MaxPooling2D
+except:
+    pass
+
+try:
+    from keras.regularizers import l2
+except:
+    pass
+
+try:
+    from keras.optimizers import RMSprop, Adam, Adadelta, Adamax, Nadam
+except:
+    pass
+
+try:
+    from keras.utils import np_utils
+except:
+    pass
+
+try:
+    from keras.models import Model, Sequential
+except:
+    pass
+
+try:
+    from keras.models import model_from_json
+except:
+    pass
+
+try:
+    from keras.models import load_model
+except:
+    pass
+
+try:
+    import keras.initializers
+except:
+    pass
+
+try:
+    from keras.losses import binary_crossentropy
+except:
+    pass
+
+try:
+    from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+except:
+    pass
+
+try:
+    from keras.utils import multi_gpu_model
+except:
+    pass
+
+try:
+    from sklearn.metrics import accuracy_score
+except:
+    pass
+
+try:
+    from sklearn.metrics import roc_auc_score
+except:
+    pass
+
+try:
+    from sklearn.model_selection import train_test_split
+except:
+    pass
+
+try:
+    from hyperopt import Trials, STATUS_OK, tpe
+except:
+    pass
+
+try:
+    from hyperas import optim
+except:
+    pass
+
+try:
+    from hyperas.distributions import choice, uniform
+except:
+    pass
+
+try:
+    from keras_contrib.applications import DenseNet
+except:
+    pass
+
+try:
+    import argparse
+except:
+    pass
+
+>>> Hyperas search space:
+
+def get_space():
+    return {
+        'lr': hp.choice('lr', [1E-2,5E-2,1E-3,5E-3,1E-4,5E-4,1E-5,5E-5]),
+        'opt': hp.choice('opt', [Adam(lr=lr), RMSprop(lr=lr),Adadelta(lr=lr),Adamax(lr=lr),Nadam(lr=lr)]),
+    }
+
+>>> Functions
+  1: def process_data():
+  2:     random_seed = 7
+  3: 
+  4:     f = h5py.File('/home/amalli2s/thesis/keras/matchedImagesSplitClasses-2017-02-24-17-39-44-96-96-split-val0.15-tr0.7-tst0.15.hdf5','r')
+  5:     X_train = f['X_train'].value
+  6:     y_train = f['y_train'].value
+  7:     X_test = f['X_val'].value
+  8:     y_test = f['y_val'].value
+  9:     X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=random_seed)
+ 10:  
+ 11:     return X_train,y_train,X_val,y_val,X_test,y_test
+ 12: 
+ 13: 
+>>> Data
+ 1: 
+ 2: X_train,y_train,X_val,y_val,X_test,y_test = process_data()
+ 3: 
+ 4: 
+ 5: 
+>>> Resulting replaced keras model:
+
+   1: def keras_fmin_fnct(space):
+   2: 
+   3:     epochs = 30
+   4:     es_patience = 5
+   5:     lr_patience = 3
+   6:     dropout = None
+   7:     depth = 25
+   8:     nb_dense_block = 3
+   9:     nb_filter = 16
+  10:     growth_rate = 18
+  11:     bn = True
+  12:     reduction_ = 0.5
+  13:     bs = 32
+  14:     lr = space['lr']
+  15:     opt = space['opt']
+  16:     weight_file = 'hyperas_dn_lr_optimizer_wt_2Oct_1237.h5'
+  17:     nb_classes = 1
+  18:     img_dim = (2,96,96) 
+  19:     n_channels = 2 
+  20: 
+  21:     
+  22:     densenet  = DenseNet(depth=depth, nb_dense_block=nb_dense_block,
+  23:                  growth_rate=growth_rate, nb_filter=nb_filter,
+  24:                  dropout_rate=dropout,activation='sigmoid',
+  25:                  input_shape=img_dim,include_top=True,
+  26:                  bottleneck=bn,reduction=reduction_,
+  27:                  classes=nb_classes,pooling='avg',
+  28:                  weights=None)
+  29:     
+  30:     model=multi_gpu_model(densenet)
+  31: 
+  32:     model.summary()
+  33:     model.compile(loss=binary_crossentropy, optimizer=opt, metrics=['accuracy'])
+  34: 
+  35:     es = EarlyStopping(monitor='val_loss', patience=es_patience,verbose=1)
+  36:     checkpointer = ModelCheckpoint(filepath=weight_file,verbose=1, save_best_only=True)
+  37: 
+  38:     lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=np.sqrt(0.1), cooldown=0, patience=lr_patience, min_lr=0.5e-6,verbose=1)
+  39: 
+  40:     model.fit(X_train,y_train,
+  41:           batch_size=bs,
+  42:           epochs=epochs,
+  43:           callbacks=[lr_reducer,checkpointer,es],
+  44:           validation_data=(X_val,y_val),
+  45:           verbose=1)
+  46:     
+  47:     score, acc = model.evaluate(X_val,y_val)
+  48:     print('current val accuracy:', acc)
+  49:     pred = model.predict(X_val)
+  50:     auc_score = roc_auc_score(y_val,pred)
+  51:     print("current auc_score ------------------> ",auc_score)
+  52: 
+  53:     model = load_model(weight_file) #This is the best model
+  54:     score, acc = model.evaluate(X_val,y_val)
+  55:     print('Best saved model val accuracy:', acc)
+  56:     pred = model.predict(X_val)
+  57:     auc_score = roc_auc_score(y_val,pred)
+  58:     print("best saved model auc_score ------------------> ",auc_score)
+  59: 
+  60:     
+  61:     return {'loss': -auc_score, 'status': STATUS_OK, 'model': model}  
+  62: 
+Exception caught!
+name 'lr' is not defined
+[]
+python hyperas_keras_dn_multigpu.py -n 3
+python evaluate_saved_model_simple.py

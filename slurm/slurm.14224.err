@@ -1,0 +1,31 @@
+2018-09-30 22:56:53.218099: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2018-09-30 22:56:54.372213: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1405] Found device 0 with properties: 
+name: Tesla V100-PCIE-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.38
+pciBusID: 0000:3b:00.0
+totalMemory: 15.78GiB freeMemory: 15.37GiB
+2018-09-30 22:56:54.372249: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1484] Adding visible gpu devices: 0
+2018-09-30 22:56:54.697405: I tensorflow/core/common_runtime/gpu/gpu_device.cc:965] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-09-30 22:56:54.697449: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971]      0 
+2018-09-30 22:56:54.697455: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] 0:   N 
+2018-09-30 22:56:54.697680: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1097] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14875 MB memory) -> physical GPU (device: 0, name: Tesla V100-PCIE-16GB, pci bus id: 0000:3b:00.0, compute capability: 7.0)
+Using TensorFlow backend.
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')
+/home/amalli2s/anaconda3/envs/anime/lib/python3.6/site-packages/keras_applications/imagenet_utils.py:266: UserWarning: This model usually expects 1 or 3 input channels. However, it was passed an input_shape with 2 input channels.
+  str(input_shape[0]) + ' input channels.')

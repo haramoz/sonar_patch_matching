@@ -1,0 +1,17 @@
+2018-10-02 12:14:22.471266: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2018-10-02 12:14:23.632253: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1405] Found device 0 with properties: 
+name: Tesla V100-PCIE-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.38
+pciBusID: 0000:3b:00.0
+totalMemory: 15.78GiB freeMemory: 15.37GiB
+2018-10-02 12:14:23.632290: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1484] Adding visible gpu devices: 0
+2018-10-02 12:14:23.964086: I tensorflow/core/common_runtime/gpu/gpu_device.cc:965] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-10-02 12:14:23.964130: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971]      0 
+2018-10-02 12:14:23.964137: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] 0:   N 
+2018-10-02 12:14:23.964376: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1097] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14875 MB memory) -> physical GPU (device: 0, name: Tesla V100-PCIE-16GB, pci bus id: 0000:3b:00.0, compute capability: 7.0)
+2018-10-02 12:14:23.964711: E tensorflow/stream_executor/cuda/cuda_driver.cc:903] failed to allocate 14.53G (15598295296 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY
+2018-10-02 12:14:23.964726: E tensorflow/stream_executor/cuda/cuda_driver.cc:903] failed to allocate 13.07G (14038465536 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY
+2018-10-02 12:14:23.964734: E tensorflow/stream_executor/cuda/cuda_driver.cc:903] failed to allocate 11.77G (12634618880 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY
+2018-10-02 12:14:23.964742: E tensorflow/stream_executor/cuda/cuda_driver.cc:903] failed to allocate 10.59G (11371156480 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY
+terminate called after throwing an instance of 'std::system_error'
+  what():  Resource temporarily unavailable
+/var/spool/slurmd/job14464/slurm_script: line 15: 360855 Aborted                 (core dumped) python hyperas_dn_lr.py
