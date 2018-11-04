@@ -12,7 +12,7 @@ from time import sleep
 
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 from keras.datasets import cifar10
-from keras.optimizers import Adam
+from keras.optimizers import RMSprop,Adam,Adadelta,Adamax,Nadam,SGD
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Dense
 #from keras_contrib.applications import DenseNet
@@ -78,7 +78,7 @@ def process_data():
     return x_train1, x_train2, y_train, x_val1, x_val2, y_val, x_test1, x_test2, y_test
 
 
-def create_base_network(layers,growth_rate,nb_dense_block,nb_filter,dropout_rate):
+def create_base_network(layers,growth_rate,nb_dense_block,nb_filter,dropout_rate,reduction_,bn):
     '''Base network to be shared (eq. to feature extraction).
     '''    
     nb_classes = 2
@@ -94,8 +94,8 @@ def create_base_network(layers,growth_rate,nb_dense_block,nb_filter,dropout_rate
     #nb_filter = 32
     #dropout_rate = 0.2  # 0.0 for data augmentation
     classes = 2 #1
-    reduction_ = 0.5
-    bn = True
+    #reduction_ = 0.5
+    #bn = True
     print("------------------------ current config for the test -------------------------")
     print("Layers: ",layers," Growth_rate: ",growth_rate," nb_filter: ",nb_filter," dropout: ",dropout_rate)
     print("dense_block ",nb_dense_block," reduction_: ",reduction_," bottleneck: ",bn)
@@ -125,19 +125,19 @@ def create_base_network(layers,growth_rate,nb_dense_block,nb_filter,dropout_rate
     
     return net
 
-def fit_model(data,depth,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs):
-    #epochs = 12
+def fit_model(data,depth,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,batch_size,fc_dropout,fc_filter,fc_layers):
     input_shape = (1,96,96)
-    #lr = 5E-4
     es_patience = 4    
     lr_patience = 2    
-    batch_size = 64
-    weight_file = 'keras_densenet_siamese_19Oct_1700_weights.h5' 
-    file_name = 'keras_densenet_siamese_23Oct_0420' 
+    #batch_size = 64
+    weight_file = 'keras_densenet_siamese_27Oct_2123_weights.h5' 
+    file_name = 'keras_densenet_siamese_27Oct_2123' 
     dense_dropout = 0.5
-    print("Epochs ",epochs," batch_size: ",batch_size," lr: ",lr," es_patience: ",es_patience," lr_patience: ",lr_patience)
+    print("Epochs ",epochs," batch_size: ",batch_size," lr: ",lr," optimizer: ",opt)
+    print(" es_patience: ",es_patience," lr_patience: ",lr_patience)
+    print(" batch_size: ",batch_size," fc_dropout: ",fc_dropout," fc_filter: ",fc_filter," fc_layers: ",fc_layers)
 
-    base_network = create_base_network(depth,growth_rate,nb_dense_block,nb_filter,dropout)
+    base_network = create_base_network(depth,growth_rate,nb_dense_block,nb_filter,dropout,reduction,bn)
     input_a = Input(shape=input_shape)
     input_b = Input(shape=input_shape)
 
@@ -146,24 +146,36 @@ def fit_model(data,depth,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs)
 
     combined_features = concatenate([processed_a, processed_b], name = 'merge_features')
 
-    combined_features = Dense(512, kernel_initializer=keras.initializers.he_normal())(combined_features)    
+    combined_features = Dense(fc_filter, kernel_initializer=keras.initializers.he_normal())(combined_features)    
     combined_features = Activation('relu')(combined_features)
     combined_features = BatchNormalization()(combined_features)
-    combined_features = Dropout(0.5)(combined_features)
+    combined_features = Dropout(fc_dropout)(combined_features)
 
     combined_features = Dense(1, activation = 'sigmoid')(combined_features)
 
     model = Model(inputs = [input_a, input_b], outputs = [combined_features], name = 'model')
     model.summary()
+    if opt=='adam':
+        optimizer = Adam(lr=lr)  # Using Adam instead of SGD to speed up training
+    elif opt=='nadam':
+        optimizer=Nadam(lr=lr)
+    elif opt=='adadelta':        
+        optimizer=Adadelta(lr=lr)
+    elif opt=='adamax':        
+        optimizer=Adamax(lr=lr)
+    elif opt=='rmsprop':        
+        optimizer=RMSprop(lr=lr)
+    else:
+        optimizer=SGD(lr=lr,momentum=0.9)
 
-    optimizer = Adam(lr=lr)  # Using Adam instead of SGD to speed up training
+
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['acc'])
     print('Finished compiling')
 
     #model.compile(loss=binary_crossentropy, optimizer=opt, metrics=['accuracy'])
 
     es = EarlyStopping(monitor='val_acc', patience=es_patience,verbose=1)
-    checkpointer = ModelCheckpoint(filepath=weight_file, verbose=1, save_best_only=True)
+    checkpointer = ModelCheckpoint(filepath=weight_file, verbose=2, save_best_only=True)
     
     lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=np.sqrt(0.1),
                                cooldown=0, patience=lr_patience, min_lr=0.5e-6,verbose=1)
@@ -174,6 +186,7 @@ def fit_model(data,depth,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs)
           validation_data=([data[3], data[4]],data[5]),
           callbacks=[es,lr_reducer],
           verbose=2)
+    #model = load_model(weight_file) #This is the best model
 
     score, acc = model.evaluate([data[6], data[7]],data[8], verbose=0)
     print("Test accuracy:%0.3f"% acc)
@@ -195,7 +208,7 @@ def fit_model(data,depth,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs)
 
 def process_fit(config):
     data = process_data()
-    #nb_layers_per_block,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs
+    #nb_layers_per_block,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,fc_dropout,fc_filter,fc_layers
     layers = []
     temp_layers = config[0].split("-")
     for i in temp_layers:
@@ -206,10 +219,21 @@ def process_fit(config):
     dropout=float(config[4])
     lr=float(config[5])
     epochs=int(config[6])
+    opt=config[7]
+    reduction=float(config[8])
+    if config[9]=='FALSE':
+        bn=False
+    else:
+        bn=True
+    batch_size=int(config[10])
+    fc_dropout=float(config[11])
+    fc_filter=int(config[12])
+    fc_layers=int(config[13])
+
     accs = []
     aucs = []
-    for i in range(20):
-        acc,auc = fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs)
+    for i in range(10):
+        acc,auc = fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,batch_size,fc_dropout,fc_filter,fc_layers)
         accs.append(acc)
         aucs.append(auc)
     print("accuracies: ",accs)
@@ -217,8 +241,8 @@ def process_fit(config):
     mean = np.round(np.mean(aucs),3)
     std = np.round(np.std(aucs),3)
     result = str(mean)+'+/-'+str(std)
-    #print(mean,u'\u00B1',std)
     max = np.max(aucs)
+    print("mean and std AUC: ",result," max:  ",max)
     return result,max
 
 if __name__ == '__main__':
@@ -227,8 +251,7 @@ if __name__ == '__main__':
     #accuracies = []
     auc_scores = []
     max_aucs = []
-    #dn_siamese_one_block
-    with open('./search_spaces/dn_siamese_random_21oct.csv') as csv_file:
+    with open('./search_spaces/dn_siamese_random_27oct.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
@@ -241,8 +264,8 @@ if __name__ == '__main__':
                 auc,max=process_fit(row)
                 auc_scores.append(auc)
                 max_aucs.append(np.round(max,3))
-    print(auc_scores)
-    print(max_aucs)
+    #print(auc_scores)
+    #print(max_aucs)
     #print(search_space)
     if(len(auc_scores) == len(search_space)):
         results = zip(search_space,auc_scores,max_aucs)
