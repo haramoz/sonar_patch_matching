@@ -1,0 +1,5 @@
+nb_layers_per_block,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,batch_size,pooling
+2-2,30,2,16,0.4,0.07,12,adadelta,0.7,FALSE,64,avg
+2-2,30,2,16,0.4,0.07,5,adadelta,0.7,FALSE,64,avg
+2-2,30,2,16,0.4,0.07,10,adadelta,0.7,FALSE,64,avg
+2-2,30,2,16,0.4,0.07,8,adadelta,0.5,TRUE,64,flatten
