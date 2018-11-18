@@ -83,6 +83,43 @@ def create_base_network_vgg(input_shape,conv2d_filters,kernel_sizes,initializati
               bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
 
     x = MaxPooling2D(pool_size=(2, 2),strides=(2, 2))(x)
+
+    x = Conv2D(conv2d_filters[3]*2, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = Conv2D(conv2d_filters[3]*2, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = Conv2D(conv2d_filters[3]*2, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = MaxPooling2D(pool_size=(2, 2),strides=(2, 2))(x)
+
+    x = Conv2D(conv2d_filters[3]*4, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = Conv2D(conv2d_filters[3]*4, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = Conv2D(conv2d_filters[3]*4, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+
+    x = MaxPooling2D(pool_size=(2, 2),strides=(2, 2))(x)
+
+    x = Conv2D(conv2d_filters[3]*4, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = Conv2D(conv2d_filters[3]*4, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+    x = Conv2D(conv2d_filters[3]*4, (kernel_sizes,kernel_sizes), padding="same", activation='relu',
+               kernel_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed),
+              bias_initializer=RandomNormal(mean=0.0, stddev=0.05, seed=random_seed))(x)
+
+
+    x = MaxPooling2D(pool_size=(2, 2),strides=(2, 2))(x)
+
     x = Flatten()(x)
     x = Dense(dense_filter1, kernel_initializer=keras.initializers.he_normal(seed=random_seed),activation='relu')(x)
     if use_bn:        
@@ -208,8 +245,9 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
     pred = model.predict([data[6], data[7]])
     auc_score = roc_auc_score(data[8],pred)
     auc_score = np.round(auc_score,3)
+    acc_score = np.round(acc,3)
     print("current auc_score ------------------> %0.3f"%auc_score)
-    if(auc_score > .94):
+    if(auc_score > .95):
         model_json = model.to_json()
         score = str(auc_score)
         with open(file_name+score+".json", "w") as json_file:
@@ -219,11 +257,11 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
 
     del model
     K.clear_session()
-    return acc,auc_score
+    return acc_score,auc_score
 
 def process_fit(config):
     data = process_data()
-    trials = 2
+    trials = 10
     #conv2d_filters,kernel_sizes,initialization,layers,dense_filter1,dense_filter2,dense_filter3,dropout1,dropout2,dropout3,use_bn,batch_size,optimizer,lr,epochs,loss
     conv2d_filters = []
     temp_conv2d_filters = config[0].split("-")

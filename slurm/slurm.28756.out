@@ -1,0 +1,536 @@
+python custom_gridsearch_contrastive_loss.py
+python custom_gridsearch_contrastive_loss_vgg.py
+Column names are conv2d_filters, kernel_sizes, initialization, layers, dense_filter1, dense_filter2, dense_filter3, dropout1, dropout2, dropout3, use_bn, batch_size, optimizer, lr, epochs, loss
+batch_size:  64  opt:  adadelta  lr:  1.0  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 22s - loss: 0.2653 - acc: 0.5000 - val_loss: 0.4994 - val_acc: 0.5000
+Epoch 2/5
+ - 19s - loss: 0.2546 - acc: 0.5013 - val_loss: 0.4995 - val_acc: 0.5000
+
+Epoch 00002: ReduceLROnPlateau reducing learning rate to 0.31622776601683794.
+Epoch 3/5
+ - 19s - loss: 0.2527 - acc: 0.4992 - val_loss: 0.4993 - val_acc: 0.5000
+Epoch 00003: early stopping
+Test accuracy:0.500
+current auc_score ------------------> 0.853
+accuracies:  [0.5]
+aucs:  [0.853]
+mean and std AUC:  0.853+/-0.0  max:   0.853
+batch_size:  64  opt:  adadelta  lr:  0.7  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.2635 - acc: 0.4975 - val_loss: 0.4967 - val_acc: 0.5000
+Epoch 2/5
+ - 19s - loss: 0.2549 - acc: 0.4998 - val_loss: 0.4915 - val_acc: 0.5000
+Epoch 3/5
+ - 19s - loss: 0.2183 - acc: 0.6093 - val_loss: 0.1400 - val_acc: 0.8012
+Epoch 4/5
+ - 19s - loss: 0.1015 - acc: 0.8416 - val_loss: 0.1799 - val_acc: 0.7269
+
+Epoch 00004: ReduceLROnPlateau reducing learning rate to 0.22135943244205783.
+Epoch 5/5
+ - 19s - loss: 0.0822 - acc: 0.7746 - val_loss: 0.1147 - val_acc: 0.7333
+Epoch 00005: early stopping
+Test accuracy:0.733
+current auc_score ------------------> 0.941
+Saved model to disk
+accuracies:  [0.7333333333333333]
+aucs:  [0.941]
+mean and std AUC:  0.941+/-0.0  max:   0.941
+batch_size:  64  opt:  adadelta  lr:  0.5  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.2387 - acc: 0.5734 - val_loss: 0.1000 - val_acc: 0.8593
+Epoch 2/5
+ - 19s - loss: 0.1080 - acc: 0.8512 - val_loss: 0.1119 - val_acc: 0.8437
+
+Epoch 00002: ReduceLROnPlateau reducing learning rate to 0.15811388300841897.
+Epoch 3/5
+ - 19s - loss: 0.0833 - acc: 0.7852 - val_loss: 0.1120 - val_acc: 0.7880
+
+Epoch 00003: ReduceLROnPlateau reducing learning rate to 0.04999999966391031.
+Epoch 00003: early stopping
+Test accuracy:0.788
+current auc_score ------------------> 0.941
+Saved model to disk
+accuracies:  [0.7880376344086022]
+aucs:  [0.941]
+mean and std AUC:  0.941+/-0.0  max:   0.941
+batch_size:  64  opt:  adadelta  lr:  0.2  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.1945 - acc: 0.6897 - val_loss: 0.1234 - val_acc: 0.8358
+Epoch 2/5
+ - 19s - loss: 0.1039 - acc: 0.8363 - val_loss: 0.1359 - val_acc: 0.8316
+
+Epoch 00002: ReduceLROnPlateau reducing learning rate to 0.06324555414579977.
+Epoch 3/5
+ - 19s - loss: 0.0853 - acc: 0.7820 - val_loss: 0.1280 - val_acc: 0.7468
+
+Epoch 00003: ReduceLROnPlateau reducing learning rate to 0.0200000012792124.
+Epoch 00003: early stopping
+Test accuracy:0.747
+current auc_score ------------------> 0.926
+accuracies:  [0.7467741935483871]
+aucs:  [0.926]
+mean and std AUC:  0.926+/-0.0  max:   0.926
+batch_size:  64  opt:  adadelta  lr:  0.1  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.2045 - acc: 0.6697 - val_loss: 0.1337 - val_acc: 0.8097
+Epoch 2/5
+ - 19s - loss: 0.1132 - acc: 0.8608 - val_loss: 0.1164 - val_acc: 0.8595
+Epoch 3/5
+ - 19s - loss: 0.0938 - acc: 0.8688 - val_loss: 0.1269 - val_acc: 0.8316
+
+Epoch 00003: ReduceLROnPlateau reducing learning rate to 0.031622777072899885.
+Epoch 4/5
+ - 19s - loss: 0.0829 - acc: 0.8280 - val_loss: 0.1195 - val_acc: 0.8394
+
+Epoch 00004: ReduceLROnPlateau reducing learning rate to 0.0100000006396062.
+Epoch 00004: early stopping
+Test accuracy:0.839
+current auc_score ------------------> 0.935
+accuracies:  [0.8393817204301075]
+aucs:  [0.935]
+mean and std AUC:  0.935+/-0.0  max:   0.935
+batch_size:  64  opt:  adadelta  lr:  0.07  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 19s - loss: 0.2059 - acc: 0.6664 - val_loss: 0.1221 - val_acc: 0.8480
+Epoch 2/5
+ - 19s - loss: 0.1190 - acc: 0.8570 - val_loss: 0.1281 - val_acc: 0.8430
+
+Epoch 00002: ReduceLROnPlateau reducing learning rate to 0.022135943715421873.
+Epoch 3/5
+ - 19s - loss: 0.0922 - acc: 0.8798 - val_loss: 0.1279 - val_acc: 0.8305
+
+Epoch 00003: ReduceLROnPlateau reducing learning rate to 0.006999999858704226.
+Epoch 00003: early stopping
+Test accuracy:0.831
+current auc_score ------------------> 0.927
+accuracies:  [0.8305107526881721]
+aucs:  [0.927]
+mean and std AUC:  0.927+/-0.0  max:   0.927
+batch_size:  64  opt:  adadelta  lr:  0.05  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.2167 - acc: 0.6497 - val_loss: 0.1281 - val_acc: 0.8187
+Epoch 2/5
+ - 19s - loss: 0.1263 - acc: 0.8522 - val_loss: 0.1187 - val_acc: 0.8360
+Epoch 3/5
+ - 19s - loss: 0.1016 - acc: 0.8792 - val_loss: 0.1334 - val_acc: 0.8263
+
+Epoch 00003: ReduceLROnPlateau reducing learning rate to 0.015811388536449943.
+Epoch 4/5
+ - 19s - loss: 0.0892 - acc: 0.8839 - val_loss: 0.1301 - val_acc: 0.8397
+
+Epoch 00004: ReduceLROnPlateau reducing learning rate to 0.0050000003198031.
+Epoch 5/5
+ - 19s - loss: 0.0845 - acc: 0.8774 - val_loss: 0.1315 - val_acc: 0.8238
+
+Epoch 00005: ReduceLROnPlateau reducing learning rate to 0.0015811389419980114.
+Test accuracy:0.824
+current auc_score ------------------> 0.922
+accuracies:  [0.8237903225806451]
+aucs:  [0.922]
+mean and std AUC:  0.922+/-0.0  max:   0.922
+batch_size:  64  opt:  adadelta  lr:  0.02  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 19s - loss: 0.2548 - acc: 0.5704 - val_loss: 0.2043 - val_acc: 0.6062
+Epoch 2/5
+ - 18s - loss: 0.1685 - acc: 0.7609 - val_loss: 0.1208 - val_acc: 0.8476
+Epoch 3/5
+ - 18s - loss: 0.1373 - acc: 0.8335 - val_loss: 0.1260 - val_acc: 0.8243
+
+Epoch 00003: ReduceLROnPlateau reducing learning rate to 0.006324555178971931.
+Epoch 4/5
+ - 18s - loss: 0.1202 - acc: 0.8833 - val_loss: 0.1203 - val_acc: 0.8323
+Epoch 00004: early stopping
+Test accuracy:0.832
+current auc_score ------------------> 0.927
+accuracies:  [0.832258064516129]
+aucs:  [0.927]
+mean and std AUC:  0.927+/-0.0  max:   0.927
+batch_size:  64  opt:  adadelta  lr:  0.01  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.2904 - acc: 0.5238 - val_loss: 0.3273 - val_acc: 0.5011
+Epoch 2/5
+ - 19s - loss: 0.2084 - acc: 0.6654 - val_loss: 0.1957 - val_acc: 0.6431
+Epoch 3/5
+ - 19s - loss: 0.1734 - acc: 0.7487 - val_loss: 0.1365 - val_acc: 0.8210
+Epoch 4/5
+ - 19s - loss: 0.1522 - acc: 0.7924 - val_loss: 0.1216 - val_acc: 0.8278
+Epoch 5/5
+ - 19s - loss: 0.1378 - acc: 0.8268 - val_loss: 0.1232 - val_acc: 0.8327
+
+Epoch 00005: ReduceLROnPlateau reducing learning rate to 0.0031622775894859655.
+Test accuracy:0.833
+current auc_score ------------------> 0.929
+accuracies:  [0.8326612903225806]
+aucs:  [0.929]
+mean and std AUC:  0.929+/-0.0  max:   0.929
+batch_size:  64  opt:  adadelta  lr:  0.007  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 19s - loss: 0.3032 - acc: 0.5062 - val_loss: 0.3932 - val_acc: 0.5000
+Epoch 2/5
+ - 19s - loss: 0.2251 - acc: 0.6236 - val_loss: 0.2429 - val_acc: 0.5526
+Epoch 3/5
+ - 19s - loss: 0.1921 - acc: 0.7027 - val_loss: 0.1753 - val_acc: 0.6974
+Epoch 4/5
+ - 19s - loss: 0.1702 - acc: 0.7549 - val_loss: 0.1458 - val_acc: 0.8098
+Epoch 5/5
+ - 19s - loss: 0.1564 - acc: 0.7863 - val_loss: 0.1299 - val_acc: 0.8397
+Test accuracy:0.840
+current auc_score ------------------> 0.935
+accuracies:  [0.8396505376344086]
+aucs:  [0.935]
+mean and std AUC:  0.935+/-0.0  max:   0.935
+batch_size:  64  opt:  adadelta  lr:  0.005  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.3227 - acc: 0.4984 - val_loss: 0.4183 - val_acc: 0.5000
+Epoch 2/5
+ - 19s - loss: 0.2356 - acc: 0.5928 - val_loss: 0.2907 - val_acc: 0.5134
+Epoch 3/5
+ - 19s - loss: 0.2082 - acc: 0.6627 - val_loss: 0.2103 - val_acc: 0.5922
+Epoch 4/5
+ - 19s - loss: 0.1874 - acc: 0.7173 - val_loss: 0.1726 - val_acc: 0.7082
+Epoch 5/5
+ - 19s - loss: 0.1731 - acc: 0.7493 - val_loss: 0.1469 - val_acc: 0.8059
+Test accuracy:0.806
+current auc_score ------------------> 0.925
+accuracies:  [0.8059139784946237]
+aucs:  [0.925]
+mean and std AUC:  0.925+/-0.0  max:   0.925
+batch_size:  64  opt:  adadelta  lr:  0.002  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.4359 - acc: 0.4679 - val_loss: 0.4599 - val_acc: 0.5000
+Epoch 2/5
+ - 19s - loss: 0.2517 - acc: 0.5140 - val_loss: 0.4394 - val_acc: 0.5000
+Epoch 3/5
+ - 19s - loss: 0.2481 - acc: 0.5385 - val_loss: 0.4072 - val_acc: 0.5000
+Epoch 00003: early stopping
+Test accuracy:0.500
+current auc_score ------------------> 0.793
+accuracies:  [0.5]
+aucs:  [0.793]
+mean and std AUC:  0.793+/-0.0  max:   0.793
+batch_size:  64  opt:  adadelta  lr:  0.001  epochs:  5  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  128  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.2  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_12Nov
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 128)          1068080     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 1,068,080
+Trainable params: 1,068,080
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7440 samples
+Epoch 1/5
+ - 20s - loss: 0.5931 - acc: 0.4349 - val_loss: 0.4637 - val_acc: 0.5000
+Epoch 2/5
+ - 19s - loss: 0.2542 - acc: 0.5099 - val_loss: 0.4569 - val_acc: 0.5000
+Epoch 3/5
+ - 19s - loss: 0.2514 - acc: 0.5184 - val_loss: 0.4457 - val_acc: 0.5000
+Epoch 00003: early stopping
+Test accuracy:0.500
+current auc_score ------------------> 0.838
+accuracies:  [0.5]
+aucs:  [0.838]
+mean and std AUC:  0.838+/-0.0  max:   0.838
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '1', '5', 'contrastive'], '0.853+/-0.0', 0.853)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.7', '5', 'contrastive'], '0.941+/-0.0', 0.941)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.5', '5', 'contrastive'], '0.941+/-0.0', 0.941)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.2', '5', 'contrastive'], '0.926+/-0.0', 0.926)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.1', '5', 'contrastive'], '0.935+/-0.0', 0.935)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.07', '5', 'contrastive'], '0.927+/-0.0', 0.927)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.05', '5', 'contrastive'], '0.922+/-0.0', 0.922)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.02', '5', 'contrastive'], '0.927+/-0.0', 0.927)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.01', '5', 'contrastive'], '0.929+/-0.0', 0.929)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.007', '5', 'contrastive'], '0.935+/-0.0', 0.935)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.005', '5', 'contrastive'], '0.925+/-0.0', 0.925)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.002', '5', 'contrastive'], '0.793+/-0.0', 0.793)
+(['16-16-32-32', '3', 'random', 'single', '128', '0', '0', '0.2', '0', '0', 'FALSE', '64', 'adadelta', '0.001', '5', 'contrastive'], '0.838+/-0.0', 0.838)
