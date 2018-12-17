@@ -6,6 +6,7 @@ import h5py
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import csv
+from keras.models import load_model
 
 import keras.backend as K
 from keras.initializers import RandomNormal
@@ -203,11 +204,11 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
     input_shape = (1,96,96)
     num_classes = 2
     is_using_distance = True #IMPORTANT
-    init_decay = 1e-6 #1e-5
-    es_patience = 4    
-    lr_patience = 3    
-    weight_file = 'keras_contrastive_loss_19Nov_weights.h5' 
-    file_name = 'keras_contrastive_loss_19Nov'
+    #init_decay = 1e-6 #1e-5
+    es_patience = 3    
+    lr_patience = 2    
+    weight_file = 'keras_contrastive_loss_17Dec_weights.h5' 
+    file_name = 'keras_contrastive_loss_17Dec'
     print("batch_size: ",batch_size," opt: ",opt," lr: ",lr," epochs: ",epochs," loss: ",loss)
     base_network = create_base_network_vgg(input_shape,conv2d_filters,kernel_sizes,initialization,layers,dense_filter1,dense_filter2,dense_filter3,dropout1,dropout2,dropout3,use_bn,initializer,init_dense)
     print(file_name)
@@ -218,7 +219,7 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
     processed_b = base_network(input_b)
 
     if opt=='adam':
-        optimizer = Adam(lr=lr, decay=init_decay)
+        optimizer = Adam(lr=lr)
     elif opt=='nadam':
         optimizer=Nadam(lr=lr)
     elif opt=='adadelta':        
@@ -249,7 +250,7 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
           batch_size=batch_size,
           epochs=epochs,
           validation_data=([data[3], data[4]], data[5]),
-          callbacks=[es,lr_reducer],
+          callbacks=[es,lr_reducer,checkpointer],
           verbose=2)
     #model = load_model(weight_file) #This is the best model
 
