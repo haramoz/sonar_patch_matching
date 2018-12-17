@@ -1,0 +1,99 @@
+%
+% LaTeX2e Style for MAS R&D and master thesis reports
+% Author: Argentina Ortega Sainz, Hochschule Bonn-Rhein-Sieg, Germany
+% Please feel free to send issues, suggestions or pull requests to:
+% https://github.com/mas-group/project-report
+% Based on the template created by Ronni Hartanto in 2003
+%
+
+\documentclass[thesis]{mas_report}
+% \documentclass[rnd]{mas_report}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+
+% ****************************************************
+% THIS INFORMATION SHOULD BE UPDATED FOR YOUR REPORT
+% ****************************************************
+\author{Arka Mallick}
+\title{Sonar Patch Matching via Deep Learning}
+\supervisors{%
+Prof. Dr. Paul G. Pl\"oger\\
+Prof. Dr. Gerhard K. Kraetzschmar\\
+Dr. Matias Valdenegro-torro
+}
+\date{November 2018}
+
+
+% \thirdpartylogo{path/to/your/image}
+
+\begin{document}
+\begin{titlepage}
+    \maketitle
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	PREFACE
+%----------------------------------------------------------------------------------------
+
+%\pagestyle{plain}
+
+
+%\cleardoublepage
+%\statementpage
+
+%\begin{abstract}
+%Your abstract
+%\end{abstract}
+
+
+%\begin{acknowledgements}
+%Thanks to ....
+%\end{acknowledgements}
+
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+
+%-------------------------------------------------------------------------------
+%	CONTENT CHAPTERS
+%-------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{mainmatter}
+
+%\subfile{chapters/ch01_introduction}
+%\subfile{chapters/ch02_stateoftheart}
+%\subfile{chapters/ch03_methodology}
+%\subfile{chapters/ch04_solution}
+%\subfile{chapters/ch05_evaluation}
+%\subfile{chapters/ch06_results}
+%\subfile{chapters/ch07_conclusion}
+%\subfile{chapters/status_report}
+\subfile{chapters/status_report_densenet_simple}
+%\subfile{chapters/status_report_densenet_siamese}
+%\subfile{chapters/status_report_contrastive_loss}
+%-------------------------------------------------------------------------------
+%	APPENDIX
+%-------------------------------------------------------------------------------
+
+%\begin{appendices}
+%\subfile{chapters/appendix}
+
+%\end{appendices}
+
+\backmatter
+
+%-------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%-------------------------------------------------------------------------------
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{plainnat} % Use the plainnat bibliography style
+\bibliography{bibliography.bib} % Use the bibliography.bib file as the source of references
+
+\end{document}
