@@ -1,0 +1,131 @@
+%
+% LaTeX2e Style for MAS R&D and master thesis reports
+% Author: Argentina Ortega Sainz, Hochschule Bonn-Rhein-Sieg, Germany
+% Please feel free to send issues, suggestions or pull requests to:
+% https://github.com/mas-group/project-report
+% Based on the template created by Ronni Hartanto in 2003
+%
+
+\documentclass[thesis]{mas_report}
+% \documentclass[rnd]{mas_report}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+%\usepackage{lineno}
+%\linenumbers
+%\usepackage{quotchap}
+% ****************************************************
+% THIS INFORMATION SHOULD BE UPDATED FOR YOUR REPORT
+% ****************************************************
+\author{Arka Mallick}
+\title{Sonar Patch Matching via Deep Learning}
+\supervisors{%
+Prof. Dr. Paul G. Pl\"oger\\
+Prof. Dr. Gerhard K. Kraetzschmar\\
+Dr. Matias Valdenegro-torro
+}
+\date{January 2019}
+
+
+% \thirdpartylogo{path/to/your/image}
+
+\begin{document}
+\begin{titlepage}
+    \maketitle
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	PREFACE
+%----------------------------------------------------------------------------------------
+
+\pagestyle{plain}
+
+
+\cleardoublepage
+\statementpage
+
+\begin{abstract}
+Accurately modelling features for sonar image matching has always been very challenging. Only recently in Valdenegro et al \cite{stateoftheart}, instead of hand designed 
+features, a Convolutional Neural Network(CNN) was encoded to learn the general similarity function to be able to predict a pair of sonar patches belong to the different instance of same object or a different one. 
+The result has been a significant improvement over the state of the art methods.
+However the results need to be further improved. The error in it's prediction affects the overall performance of object recognition, tracking etc high level tasks which are based on patch matching. In this work more advanced 
+CNNs are evaluated with the ambination of improving the state of the art results. Using Densenet it was possible to predict binary classification score of matching and non-matching cases with 0.955 average AUC of ten trials, 
+where the network was trained from scratch. This was a clear improvement over the state of the art \cite{stateoftheart} results of AUC 0.894 on the same unseen test dataset. 
+For Siamese network with Densenet branches the best performance was 0.921 average roc AUC.
+A Siamese network with VGG branches were also evaluated along with Contrastive loss. This network's 
+best perfromance was 0.944 average roc AUC. To ensure the evaluation is effective thorough hyper parameter search has been performed for all three methods. 
+\end{abstract}
+
+\cleardoublepage
+
+
+\begin{dedication}
+ %I dedicate this thesis to my maternal uncle Subhas Chandra Ghosh. Unfortunately he is no longer with us. Without his help I would not be able to pursue my dream of higher studies.
+ To my maternal uncle Subhas Chandra Ghosh, \\
+ without whose support my dream of pursuing higher studies would not have been possible.
+ May he rest in peace.
+\end{dedication}
+
+
+\begin{acknowledgements}
+ My deepest thanks goes to my supervisor Dr. Matias Valdenegro-Toro. For several reasons. From technical aspect, his guidance and suggestions were invaluable and always spot on.
+ At the begining I spent several months training for deep learning and exploring other prerequisits for this work. He has been very supportive and motivating through out the period of this thesis and even much before.
+ In spite of very busy schedule, he spent lot of hours helping me, many times even during weekends. It was a great experience working with him. Also, it was a long time aspiration to work in the domain of underwater robotics. 
+ A special thanks to him for giving me this opportunity.
+ 
+ Special thanks Prof. Dr. Paul G. Pl\"oger for making this project possible through his supervision and invaluable inputs, also for the neural networks lesson, which was pivotal for deep learning training.
+ I sincerely thank to Prof. Dr. Gerhard K. Kraetzschmar for kindly agreeing to supervise this project. Along with all the technical lessons, 
+ I also thank him for the wonderful opportunity of being able to take part in Robocup competitions, which were great experience for me to learn hands on programming and be in touch with great minds. In the context, 
+ my sincere thanks Santosh, Oscar and Shehzad who were great mentors and taught me many important lessons. I also thank Prof. Dr. Rudolf Berrendorf and the entire cluster team for providing such great computational environment 
+ for all of the students. Without cluster I could have never finished this work.
+ 
+ I must thank my best friends Swarit, Pranika, Meemansha, Arshia, Aaqib, Nour for making my stay in Bonn stress-free and enjoyable. I also thank Adhideb and Abhilash, without their help I would not dare dreaming about masters in Germany.
+ %Special thanks to my partner Arshia for being there always. 
+ Finally, I thank my family and my partner Arshia for being supportive and encouraging through out and just being there whenever I need them. 
+  
+\end{acknowledgements}
+
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%-------------------------------------------------------------------------------
+%	CONTENT CHAPTERS
+%-------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{mainmatter}
+
+\subfile{chapters/ch01_introduction}
+\subfile{chapters/ch02_stateoftheart}
+\subfile{chapters/ch03_methodology}
+%\subfile{chapters/ch04_solution} % merging together with evaluation
+\subfile{chapters/ch05_evaluation}
+\subfile{chapters/ch06_results}
+\subfile{chapters/ch07_conclusion}
+
+
+%-------------------------------------------------------------------------------
+%	APPENDIX
+%-------------------------------------------------------------------------------
+
+\begin{appendices}
+\subfile{chapters/appendix}
+
+\end{appendices}
+
+\backmatter
+
+%-------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%-------------------------------------------------------------------------------
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{plainnat} % Use the plainnat bibliography style
+\bibliography{bibliography.bib} % Use the bibliography.bib file as the source of references
+
+\end{document}
