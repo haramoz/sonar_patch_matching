@@ -1,34 +1,40 @@
 %!TEX root = ../report.tex
 
 \chapter{Introduction}
+\label{chap:intro}
 \newcommand{\chapquote}[3]{\begin{quotation} \textit{#1} \end{quotation} \begin{flushright} - #2\end{flushright} }
 
 \chapquote{``You can't cross the sea merely by standing and staring at the water.``}{Rabindranath Tagore}
 
-More than two thirds of the earth surface is covered by ocean and other water bodies. For a human it is often impossible to be able to explore it extensively. 
-For finding new source of energy, monitoring tsunami, global warming or may be just to learn about deep sea eco-system or may be to look for a lost ship or an airplane, the need for venturing into potentially dangerous 
-underwater scenarios appears regularly, in fact getting more frequent. That's why more and more robots are being deployed in underwater scenarios and lot of research is going in this direction. 
-Some of the exploration or monitoring tasks requires the robot to see underwater, in order to make intelligent decisions.
+
+
+More than two-thirds of the earth surface is covered by ocean and other water bodies. For a human it is often impossible to be able to explore it extensively. 
+For finding new source of energy, monitoring tsunami, global warming or may be just to learn about deep-sea eco-system or may be to look for a lost ship or an airplane, the need for venturing into potentially dangerous 
+underwater scenarios appear regularly, in fact getting more frequent. That's why more and more robots are being deployed in underwater scenarios and lot of research is going in this direction.
+Some of the exploration or monitoring tasks requires the robot to see underwater, to make intelligent decisions.
 But underwater environment is very difficult for optical cameras, as light is attenuated and absorbed by the particles in the water. And lot of real life monitoring and mapping 
 tasks take place in cluttered and turbid underwater scenario. The limited visibility range of optical sensor is a big challenge. Hence sonar is more practical choice for underwater sensing as the sound can travel 
 long distances with comparatively little attenuation. Though there are challenges with acoustic sensing as well, for example, it has low signal-to-noise ratio, lower resolution and unwanted reflections also cause problems. \\
+
+
 
 Patch matching is one of the fundamental tasks in todays myriad computer vision and image processing applications. Patch matching can be used as low-level tasks like image stitching \cite{brown2007automatic}, 
 deriving structure from motion \cite{molton2004locally} or high-level task as object instance recognition \cite{lowe1999object}, object classification \cite{yao2012codebook}, multi-view reconstruction \cite{seitz2006comparison}, 
 image-retrieval etc. 
 Patch matching for acoustic images are getting increasingly useful in underwater scenarios for data association in simultaneous localization and mapping (SLAM), object tracking, sonar image mosaicing \cite{hurtos2012fourier}
-etc. applications. Typical challenges in patch matching tasks are different viewing points, variations in illumination of the scene, occlusions and different sensor settings. For patch matching in sonar images the typical issues 
-with sonar images adds to the overall challenge, for example low signal to noise ratio, less of visibility causes the underlying object features to be not so prominent as a normal image. So it has been found that it is very 
-challenging task to manually design features for the matching task is very challenging. %TODO add source Also the popular hand designed features such as SIFT \cite{lowe2004distinctive} are not always very effective in sonar images.
+etc. applications. Typical challenges in patch matching tasks are different viewing points, variations in illumination of the scene, occlusion and different sensor settings. For patch matching in sonar images the typical issues 
+with sonar adds to the overall challenge, such as low signal to noise ratio, less visibility etc., causes the underlying object features to be not so prominent as a normal image. So it has been found that it is very 
+challenging to manually design features for the matching task \cite{stateoftheart}. %TODO add source Also the popular hand designed features such as SIFT \cite{lowe2004distinctive} are not always very effective in sonar images.
 
 \section{Motivation}
+\label{sec:motivation}
 
-In Valdenegro et al. \cite{stateoftheart} it was first displayed that deep learning methods can be directly applied to the sonar image patch classification task, without use of any hand designed features it is still possible 
-to perform a patch matching task with high accuracy. In \cite{stateoftheart} the authors recorded forward looking sonar images of different objects in underwater environment and generated balanced dataset
+In Valdenegro et al. \cite{stateoftheart} it was first displayed that deep learning methods can be directly applied to the sonar image patch classification task. Without using any hand designed features it is still possible 
+to perform a patch matching task with high accuracy. In \cite{stateoftheart} the authors recorded Forward-Looking Sonar (FLS) images of different objects in underwater environment and generated balanced dataset
 of image patches for the classification task.
 Two channel convolutional network and Siamese convolutional network were used in predicting the binary classification scores (table \ref{best_results_stateoftheart}) on unseen test data. Using Two channel CNN the overall 
-best result obtained was of roc area under curve of 0.894, with test accuracy of 82.9\%. The reported results are
-better than both classic keypoint matching methods (AUC 0.61 to 0.68) and ML-based methods such as Support Vector Machine (SVM) and Random Forests (AUC 0.65 to 0.80). These findings were pivotal for the work presented in this thesis.
+best result obtained was of Receiver operating characteristic (ROC) area under curve (AUC) of 0.894, with test accuracy of 82.9\%. The reported results are
+better than both classic keypoint matching methods (AUC 0.61 to 0.68) and machine learning based methods such as Support Vector Machine (SVM) and Random Forests (AUC 0.65 to 0.80). These findings were pivotal for the work presented in this thesis.
 
 \begin{table}
 \centering
@@ -49,9 +55,10 @@ results in \cite{stateoftheart}}
 \newpage
 
 \section{Problem Statement}
+\label{sec:problem_statement}
 However the results in \cite{stateoftheart} is far from perfect yet and the mis-classifications affect the object detection, recognition and tracking, 
 which are dependent on the patch matching task. It is desired that the result is further improved. With this goal the same dataset has been obtained from the \cite{stateoftheart} for further evaluation.
-In this thesis more advanced architectures (such as Densenet) \cite{densenet} will be evaluated on the data and the goal is to improve the state of the art on the dataset. 
+In this thesis more advanced architectures (such as DenseNet) \cite{densenet} will be evaluated on the data and the goal is to improve the state of the art on the dataset. 
 
 %\flushbottom
 %\newpage
