@@ -9,6 +9,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import csv
 from time import sleep
+import timeit
 
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 from keras.datasets import cifar10
@@ -130,8 +131,8 @@ def fit_model(data,depth,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,
     es_patience = 4    
     lr_patience = 3    
     #batch_size = 64
-    weight_file = 'keras_densenet_siamese_4Nov_1540_weights.h5' 
-    file_name = 'keras_densenet_siamese_4Nov_1540' 
+    weight_file = 'keras_densenet_siamese_8Nov_2300_weights.h5' 
+    file_name = 'keras_densenet_siamese_8Nov_2300' 
     dense_dropout = 0.5
     print("Epochs ",epochs," batch_size: ",batch_size," lr: ",lr," optimizer: ",opt)
     print(" es_patience: ",es_patience," lr_patience: ",lr_patience)
@@ -232,7 +233,7 @@ def process_fit(config):
 
     accs = []
     aucs = []
-    for i in range(10):
+    for i in range(3):
         acc,auc = fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,batch_size,fc_dropout,fc_filter,fc_layers)
         accs.append(acc)
         aucs.append(auc)
@@ -246,7 +247,7 @@ def process_fit(config):
     return result,max
 
 if __name__ == '__main__':
-    
+    start_time = timeit.default_timer()
     search_space = []
     #accuracies = []
     auc_scores = []
@@ -274,3 +275,4 @@ if __name__ == '__main__':
     else:
         print(auc_scores)
     K.clear_session()
+    print(timeit.default_timer() - start_time)

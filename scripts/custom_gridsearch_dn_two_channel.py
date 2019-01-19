@@ -9,6 +9,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import csv
 from time import sleep
+import timeit
 
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 from keras.datasets import cifar10
@@ -59,16 +60,15 @@ def process_data():
 def fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,batch_size,pooling):
     es_patience = 4    
     lr_patience = 3    
-    weight_file = 'keras_densenet_twochannel_6Nov_1640_weights.h5' 
-    file_name = 'keras_densenet_twochannel_6Nov_1640'
+    weight_file = 'keras_densenet_simple_wt_13Dec2100.h5' 
+    file_name = 'keras_densenet_twochannel_14Dec_0000'
     print("------------------------ current config for the test -------------------------")
     print("Layers: ",layers," Growth_rate: ",growth_rate," nb_filter: ",nb_filter," dropout: ",dropout)
-    print("dense_block ",nb_dense_block," reduction: ",reduction," bottleneck: ",bn)
-    print("Epochs ",epochs," batch_size: ",batch_size," lr: ",lr," optimizer: ",opt)
-    print(" es_patience: ",es_patience," lr_patience: ",lr_patience)
+    print("dense_block: ",nb_dense_block," reduction: ",reduction," bottleneck: ",bn)
+    print("Epochs: ",epochs," batch_size: ",batch_size," lr: ",lr," optimizer: ",opt)
+    print(" es_patience: ",es_patience," lr_patience: ",lr_patience," pooling: ",pooling)
     print("------------------------	  end of configs        -------------------------")
 
-    weight_file = 'keras_densenet_simple_wt_6Nov1610.h5'
     img_dim = (2,96,96)
     classes = 1 #for binary classification
 
@@ -92,8 +92,6 @@ def fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs
                      weights=None,
                      subsample_initial_block=True,
                      transition_pooling='avg')    
-
-    model.summary()
 
     if opt=='adam':
         optimizer = Adam(lr=lr)
@@ -134,7 +132,7 @@ def fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs
     auc_score = roc_auc_score(data[5],pred)
     auc_score = np.round(auc_score,4)
     print("current auc_score ------------------> %0.3f"%auc_score)
-    if(auc_score > .94):
+    if(auc_score > .95):
         model_json = model.to_json()
         score = str(auc_score)
         with open(file_name+score+".json", "w") as json_file:
@@ -147,6 +145,7 @@ def fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs
     return acc,auc_score
 
 def process_fit(config):
+    start_time = timeit.default_timer()
     data = process_data()
     #nb_layers_per_block,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,pooling
     layers = []
@@ -160,6 +159,8 @@ def process_fit(config):
     lr=float(config[5])
     epochs=int(config[6])
     opt=config[7]
+
+    trials = 3
     reduction=float(config[8])
     if config[9]=='FALSE':
         bn=False
@@ -170,7 +171,7 @@ def process_fit(config):
 
     accs = []
     aucs = []
-    for i in range(2):
+    for i in range(trials):
         acc,auc = fit_model(data,layers,growth_rate,nb_dense_block,nb_filter,dropout,lr,epochs,opt,reduction,bn,batch_size,pooling)
         accs.append(acc)
         aucs.append(auc)
@@ -184,12 +185,12 @@ def process_fit(config):
     return result,max
 
 if __name__ == '__main__':
-    
+    start_time = timeit.default_timer()    
     search_space = []
     #accuracies = []
     auc_scores = []
     max_aucs = []
-    with open('./search_spaces/dn_two_channel_random_6Nov.csv') as csv_file:
+    with open('./search_spaces/dn_two_channel_13Dec.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
@@ -212,3 +213,4 @@ if __name__ == '__main__':
     else:
         print(auc_scores)
     K.clear_session()
+    print(timeit.default_timer() - start_time)

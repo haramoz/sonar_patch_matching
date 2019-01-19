@@ -6,8 +6,9 @@ import h5py
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import csv
-from keras.models import load_model
+import timeit
 
+from keras.models import load_model
 import keras.backend as K
 from keras.initializers import RandomNormal
 from keras.layers.core import Dense, Dropout, Activation
@@ -207,8 +208,8 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
     #init_decay = 1e-6 #1e-5
     es_patience = 3    
     lr_patience = 2    
-    weight_file = 'keras_contrastive_loss_17Dec_weights.h5' 
-    file_name = 'keras_contrastive_loss_17Dec'
+    weight_file = 'keras_contrastive_loss_20Dec2pm_weights.h5' 
+    file_name = 'keras_contrastive_loss_20Dec2pm'
     print("batch_size: ",batch_size," opt: ",opt," lr: ",lr," epochs: ",epochs," loss: ",loss)
     base_network = create_base_network_vgg(input_shape,conv2d_filters,kernel_sizes,initialization,layers,dense_filter1,dense_filter2,dense_filter3,dropout1,dropout2,dropout3,use_bn,initializer,init_dense)
     print(file_name)
@@ -252,7 +253,7 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
           validation_data=([data[3], data[4]], data[5]),
           callbacks=[es,lr_reducer,checkpointer],
           verbose=2)
-    #model = load_model(weight_file) #This is the best model
+    model = load_model(weight_file, custom_objects={'contrastive_loss_altered':contrastive_loss_altered}) #This is the best model
 
     score, acc = model.evaluate([data[6], data[7]], data[8], verbose=0)
     print("Test accuracy:%0.3f"% acc)
@@ -275,7 +276,7 @@ def fit_model(data,conv2d_filters,kernel_sizes,initialization,layers,dense_filte
 
 def process_fit(config):
     data = process_data()
-    trials = 10
+    trials = 3
     #conv2d_filters,kernel_sizes,layers,dense_filter1,dense_filter2,dense_filter3,dropout1,dropout2,dropout3,use_bn,batch_size,optimizer,lr,epochs,loss,initializer,init_dense
     conv2d_filters = []
     temp_conv2d_filters = config[0].split("-")
@@ -317,11 +318,12 @@ def process_fit(config):
     return result,max
 
 if __name__ == '__main__':
+    start_time = timeit.default_timer()
     search_space = []
     #accuracies = []
     auc_scores = []
     max_aucs = []
-    with open('./search_spaces/dn_contrastive_loss_19Nov.csv') as csv_file:
+    with open('./search_spaces/dn_contrastive_loss_19Dec.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
@@ -344,5 +346,6 @@ if __name__ == '__main__':
     else:
         print(auc_scores)
     K.clear_session()
+    print(timeit.default_timer() - start_time)
 
 

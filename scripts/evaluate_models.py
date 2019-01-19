@@ -16,16 +16,21 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_auc_score
 from sklearn import metrics
 
-def plot_auc(fpr,tpr,filename):
-    fig = plt.figure()
+plt.switch_backend('agg')
+
+def plot_auc(fpr,tpr,filename,auc_score):
+    fig=plt.figure()
     plt.plot(fpr, tpr,'m-')
+    lw = 2
+    plt.plot(fpr, tpr, color='darkorange',lw=lw, label='ROC curve (area = %0.3f)' % auc_score)
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('Receiver operating characteristic')
-    #plt.show()
-    #plt.savefig("figure.png")
+    plt.legend()
+    plt.savefig("figure.png")
     pp = PdfPages(filename+'.pdf')
     pp.savefig(fig)
     pp.close()
@@ -84,8 +89,8 @@ def load_model(file_name):
     return loaded_model
 
 is_siamese = True
-file_name = 'keras_densenet_siamese_4Nov_15400.9497'
-#file_name = 'keras_densenet_twochannel_9Nov_14400.9725'
+#file_name = 'keras_densenet_siamese_4Nov_15400.9497'
+file_name = 'keras_densenet_twochannel_9Nov_14400.9725'
 
 if not is_siamese:
     X_train,y_train,X_val,y_val = process_data()    
@@ -100,7 +105,7 @@ if not is_siamese:
     print("auc_score ------------------> ",np.round(auc_score,3))
 
     fpr, tpr, thresholds = metrics.roc_curve(y_val, pred)
-    plot_auc(fpr,tpr,file_name)
+    plot_auc(fpr,tpr,file_name,auc_score)
 else:
     x_train1, x_train2, y_train, x_val1, x_val2, y_val, x_test1, x_test2, y_test = process_data_siamese()
     loaded_model = load_model(file_name)
@@ -115,13 +120,12 @@ else:
 
     fpr, tpr, thresholds = metrics.roc_curve(y_test, pred)
     #print(fpr,tpr)
-    plot_auc(fpr,tpr,file_name) 
-    print("error here!")
+    plot_auc(fpr,tpr,file_name,auc_score) 
 
-    with open('auc_plot.csv', mode='w') as auc_plot:
+    """with open('auc_plot.csv', mode='w') as auc_plot:
         auc_plot_writer = csv.writer(auc_plot, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         auc_plot_writer.writerow(fpr)
-        auc_plot_writer.writerow(tpr)
+        auc_plot_writer.writerow(tpr)"""
 
 	
 
