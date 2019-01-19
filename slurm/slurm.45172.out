@@ -1,0 +1,176 @@
+python custom_gridsearch_contrastive_loss.py
+python custom_gridsearch_contrastive_loss_vgg.py
+python custom_gridsearch_contrastive_loss_vgg_bn.py
+Column names are conv2d_filters, kernel_sizes, initialization, layers, dense_filter1, dense_filter2, dense_filter3, dropout1, dropout2, dropout3, use_bn, batch_size, optimizer, lr, epochs, loss, initializer, init_dense
+batch_size:  256  opt:  nadam  lr:  0.0002  epochs:  10  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  2048  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.6  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+ initializer:  random_normal  init_dense:  glorot_normal
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_20Dec2pm
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 2048)         3281840     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 3,281,840
+Trainable params: 3,281,840
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7968 samples
+Epoch 1/10
+ - 17s - loss: 0.2504 - acc: 0.5507 - val_loss: 0.2634 - val_acc: 0.6355
+
+Epoch 00001: val_loss improved from inf to 0.26342, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 2/10
+ - 14s - loss: 0.1671 - acc: 0.7209 - val_loss: 0.1748 - val_acc: 0.7299
+
+Epoch 00002: val_loss improved from 0.26342 to 0.17479, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 3/10
+ - 14s - loss: 0.1535 - acc: 0.6156 - val_loss: 0.1371 - val_acc: 0.7203
+
+Epoch 00003: val_loss improved from 0.17479 to 0.13708, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 4/10
+ - 14s - loss: 0.1482 - acc: 0.5835 - val_loss: 0.1411 - val_acc: 0.6886
+
+Epoch 00004: val_loss did not improve from 0.13708
+Epoch 5/10
+ - 14s - loss: 0.1452 - acc: 0.5774 - val_loss: 0.1455 - val_acc: 0.6525
+
+Epoch 00005: ReduceLROnPlateau reducing learning rate to 6.324555160565053e-05.
+
+Epoch 00005: val_loss did not improve from 0.13708
+Epoch 00005: early stopping
+Test accuracy:0.829
+current auc_score ------------------> 0.945
+batch_size:  256  opt:  nadam  lr:  0.0002  epochs:  10  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  2048  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.6  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+ initializer:  random_normal  init_dense:  glorot_normal
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_20Dec2pm
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 2048)         3281840     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 3,281,840
+Trainable params: 3,281,840
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7968 samples
+Epoch 1/10
+ - 15s - loss: 0.2546 - acc: 0.5501 - val_loss: 0.2801 - val_acc: 0.5856
+
+Epoch 00001: val_loss improved from inf to 0.28014, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 2/10
+ - 15s - loss: 0.1714 - acc: 0.7220 - val_loss: 0.1980 - val_acc: 0.7159
+
+Epoch 00002: val_loss improved from 0.28014 to 0.19800, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 3/10
+ - 15s - loss: 0.1556 - acc: 0.6289 - val_loss: 0.1623 - val_acc: 0.7372
+
+Epoch 00003: val_loss improved from 0.19800 to 0.16232, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 4/10
+ - 14s - loss: 0.1510 - acc: 0.5956 - val_loss: 0.1524 - val_acc: 0.7403
+
+Epoch 00004: val_loss improved from 0.16232 to 0.15243, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 5/10
+ - 14s - loss: 0.1459 - acc: 0.5755 - val_loss: 0.1548 - val_acc: 0.7316
+
+Epoch 00005: val_loss did not improve from 0.15243
+Epoch 6/10
+ - 14s - loss: 0.1436 - acc: 0.5712 - val_loss: 0.1255 - val_acc: 0.6760
+
+Epoch 00006: val_loss improved from 0.15243 to 0.12546, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 7/10
+ - 14s - loss: 0.1425 - acc: 0.5681 - val_loss: 0.1388 - val_acc: 0.6473
+
+Epoch 00007: val_loss did not improve from 0.12546
+Epoch 00007: early stopping
+Test accuracy:0.814
+current auc_score ------------------> 0.945
+batch_size:  256  opt:  nadam  lr:  0.0002  epochs:  10  loss:  contrastive
+conv2d_filters:  [16, 16, 32, 32]  kernel_sizes:  3  initialization:  random  layers:  single
+dense_filter1:  2048  dense_filters2:  0  dense_filters3:  0
+dropout1:  0.6  dropout2:  0.0  dropout3:  0.0  use_bn:  False
+ initializer:  random_normal  init_dense:  glorot_normal
+------------------------	  end of configs        -------------------------
+keras_contrastive_loss_20Dec2pm
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_2 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 1, 96, 96)    0                                            
+__________________________________________________________________________________________________
+model_1 (Model)                 (None, 2048)         3281840     input_2[0][0]                    
+                                                                 input_3[0][0]                    
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           model_1[1][0]                    
+                                                                 model_1[2][0]                    
+==================================================================================================
+Total params: 3,281,840
+Trainable params: 3,281,840
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Train on 31872 samples, validate on 7968 samples
+Epoch 1/10
+ - 15s - loss: 0.2567 - acc: 0.5352 - val_loss: 0.3018 - val_acc: 0.5122
+
+Epoch 00001: val_loss improved from inf to 0.30177, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 2/10
+ - 15s - loss: 0.1713 - acc: 0.7199 - val_loss: 0.1720 - val_acc: 0.7334
+
+Epoch 00002: val_loss improved from 0.30177 to 0.17201, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 3/10
+ - 14s - loss: 0.1551 - acc: 0.6420 - val_loss: 0.1525 - val_acc: 0.7357
+
+Epoch 00003: val_loss improved from 0.17201 to 0.15250, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 4/10
+ - 14s - loss: 0.1489 - acc: 0.5948 - val_loss: 0.1561 - val_acc: 0.7372
+
+Epoch 00004: val_loss did not improve from 0.15250
+Epoch 5/10
+ - 14s - loss: 0.1458 - acc: 0.5821 - val_loss: 0.1510 - val_acc: 0.7415
+
+Epoch 00005: val_loss improved from 0.15250 to 0.15096, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 6/10
+ - 14s - loss: 0.1523 - acc: 0.6030 - val_loss: 0.1484 - val_acc: 0.7331
+
+Epoch 00006: val_loss improved from 0.15096 to 0.14840, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 7/10
+ - 14s - loss: 0.1440 - acc: 0.5821 - val_loss: 0.1389 - val_acc: 0.7085
+
+Epoch 00007: val_loss improved from 0.14840 to 0.13886, saving model to keras_contrastive_loss_20Dec2pm_weights.h5
+Epoch 8/10
+ - 14s - loss: 0.1425 - acc: 0.5760 - val_loss: 0.1476 - val_acc: 0.6918
+
+Epoch 00008: val_loss did not improve from 0.13886
+Epoch 00008: early stopping
+Test accuracy:0.836
+current auc_score ------------------> 0.947
+accuracies:  [0.829, 0.814, 0.836]
+aucs:  [0.945, 0.945, 0.947]
+mean and std AUC:  0.946+/-0.001  max:   0.947
+(['16-16-32-32', '3', 'random', 'single', '2048', '0', '0', '0.6', '0', '0', 'FALSE', '256', 'nadam', '0.0002', '10', 'contrastive', 'random_normal', 'glorot_normal'], '0.946+/-0.001', 0.947)
+328.54698239499703
+python vgg_final.py
