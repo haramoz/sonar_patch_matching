@@ -1,6 +1,15 @@
 %!TEX root = ../report.tex
-\chapter{Design Details}
-Your first appendix
+%\chapter{Design Details}
+%Your first appendix
 
-\chapter{Parameters}
-Your second chapter appendix
+%\chapter{Parameters}
+%Your second chapter appendix
+\chapter{Hyperas}
+\label{chap:hyperas}
+\label{hyperas}
+Hyperas \cite{hyperas}, is a Keras wrapper for Hyperopt \cite{bergstra2015hyperopt}. Initially, it was chosen as the preferred tool 
+to do hyperparameter optimization, because it is based on Tree-structured Parzen Estimator (TPE) \cite{bergstra2011algorithms}, an automated and efficient hyperparameter optimization algorithm.
+But it did not offer any way to evaluate Siamese networks. 
+So, a simple solution was developed which enables the use of Hyperas for Siamese networks. After consulting with the author of Hyperas, 
+this solution has been contributed as an example in the Hyperas official repository. Can be found here:
+\code{https://github.com/maxpumperla/hyperas/blob/master/examples/\\hyperas\_in\_intermediate\_fns.py}.

@@ -74,16 +74,16 @@ Dr. Matias Valdenegro-Toro
 \statementpage
 
 \begin{abstract}
-Accurately modelling features manually for sonar image matching has always been very challenging. Only recently in Valdenegro et al. \cite{stateoftheart}, instead of hand designed 
-features, a Convolutional Neural Network (CNN) was encoded to learn the general similarity function to be able to predict a pair of sonar patches belong to the different instance of same object or a different one. 
-The result has been a significant improvement over the state of the art methods.
-However the results need to be further improved. The error in its prediction affects the overall performance of object recognition, tracking etc high level tasks which are based on patch matching. In this work more advanced 
-CNNs are evaluated with the goal of improving the state of the art results. Using DenseNet it was possible to predict binary classification score of matching and non-matching cases with 0.955 average AUC of ten trials, 
-where the network was trained from scratch. This was a clear improvement over the state of the art \cite{stateoftheart} results of AUC 0.894 on the same unseen test dataset. 
-For Siamese network with DenseNet branches the best performance was 0.921 average AUC (10 trials).
-A Siamese network with VGG branches were also evaluated along with Contrastive loss. This network's 
-best performance was 0.944 average AUC (10 trials). To ensure the evaluation is effective thorough hyperparameter search has been performed for all three methods. 
+Application of underwater robots are on the rise, most of them are dependent on sonar for underwater vision. Though sonar is more effective than optical vision in difficult underwater scenarios, acoustic images
+have a low signal-to-noise ratio, low resolution and therefore harder to model accurately. Recently in Valdenegro-Toro \cite{stateoftheart}, instead of modeling features manually, a Convolutional Neural Network (CNN) 
+is encoded to learn general similarity function and predict two input sonar images are similar or not. This work presented much-improved prediction accuracy for sonar image matching functionality, which is instrumental in aquatic applications
+like localization, mapping, even in some object detection/recognition. 
 
+With the objective of improving the sonar image matching problem further, three state-of-the-art CNN architectures are evaluated
+on the dataset from \cite{stateoftheart}, containing about 39K pairs of training data, and another 8K for testing. To ensure a fair evaluation of each network, thorough hyperparameter optimization is executed. 
+Using DenseNet Two-Channel network average prediction accuracy obtained is 0.955 area under ROC curve (AUC). VGG-Siamese (with Contrastive loss function) and DenseNet-Siamese perform the prediction with an average 
+AUC of 0.949 and 0.921 respectively. All these results are an improvement over the result (0.894 AUC) from Valdenegro-Toro \cite{stateoftheart}. By encoding an ensemble of DenseNet two-channel and DenseNet-Siamese 
+models with the highest AUC scores, overall highest prediction accuracy obtained is 0.978 AUC.
 \end{abstract}
 
 \cleardoublepage
@@ -98,20 +98,18 @@ best performance was 0.944 average AUC (10 trials). To ensure the evaluation is 
 
 
 \begin{acknowledgements}
- My deepest thanks goes to my supervisor Dr. Matias Valdenegro-Toro. For several reasons. From technical aspect, his guidance and suggestions were invaluable and always spot on.
- At the beginning I spent several months training for deep learning and exploring other prerequisites for this work. He has been very supportive and motivating throughout the period of this thesis and even much before.
- In spite of very busy schedule, he spent a lot of hours helping me, many times even during weekends. It was a great experience working with him. Also, it was a long time aspiration to work in the domain of underwater robotics. 
+ My deepest thanks go to my supervisor Dr. Matias Valdenegro-Toro. For several reasons. From the technical aspect, his guidance and suggestions were invaluable and always spot on.
+ In the beginning, I spent several months training for deep learning and exploring other prerequisites for this work. He has been very supportive and motivating throughout the period of this thesis and even much before.
+ In spite of a very busy schedule, he spent a lot of hours helping me, many times even during weekends. It was a great experience working with him. Also, it was a long time aspiration to work in the domain of underwater robotics. 
  A special thanks to him for giving me this opportunity.
  
- Special thanks Prof. Dr. Paul G. Pl\"oger for making this project possible through his supervision and invaluable inputs, also for the neural networks lesson, which was pivotal for deep learning training.
- I sincerely thank to Prof. Dr. Gerhard K. Kraetzschmar for kindly agreeing to supervise this project. Along with all the technical lessons, 
- I also thank him for the wonderful opportunity of being able to take part in Robocup competitions, which were great experience for me to learn hands on programming and be in touch with great minds. In the context, 
- my sincere thanks Santosh, Oscar and Shehzad who were great mentors and taught me many important lessons. I also thank Prof. Dr. Rudolf Berrendorf and the entire cluster team for providing such great computational environment 
- for all the students. Without cluster I could have never finished this work.
+ Special thanks to Prof. Dr. Paul G. Pl\"oger for making this project possible through his supervision and invaluable inputs, also for the neural networks lesson, which was pivotal for deep learning training.
+ I sincerely thank Prof. Dr. Gerhard K. Kraetzschmar for kindly agreeing to supervise this project. Along with all the technical lessons, 
+ I also thank him for the wonderful opportunity of being able to take part in RoboCup competitions, which were a great experience for me to learn hands-on programming and be in touch with great minds. In the context, 
+ my sincere thanks to Santosh, Oscar, and Shehzad who were great mentors and taught me many important lessons. I also thank Prof. Dr. Rudolf Berrendorf and the entire cluster team for providing such great computational environment for all the students. Without cluster, I could have never finished this work.
  
- I must thank my best friends Swarit, Pranika, Meemansa, Arshia, Aaqib and Nour for making my stay in Bonn stress-free and enjoyable. I also thank Adhideb and Abhilash, without their help I would not dare dreaming about masters in Germany.
- %Special thanks to my partner Arshia for being there always. 
- Finally, I thank my family and my partner Arshia for being supportive and encouraging through out and just being there whenever I need them. 
+ I must thank my best friends Swarit, Pranika, Meemansa, Aaqib, Nour, and Arshia for making my stay in Bonn stress-free and enjoyable. I also thank Adhideb and Abhilash, without their help, I would not dare to dream about masters in Germany.
+ Finally, I thank my family and my partner Arshia for being supportive and encouraging throughout and for being there always. 
   
 \end{acknowledgements}
 
@@ -131,7 +129,6 @@ best performance was 0.944 average AUC (10 trials). To ensure the evaluation is 
 \subfile{chapters/ch01_introduction}
 \subfile{chapters/ch02_stateoftheart}
 \subfile{chapters/ch03_methodology}
-%\subfile{chapters/ch04_solution} % merging together with evaluation
 \subfile{chapters/ch05_evaluation}
 \subfile{chapters/ch06_results}
 \subfile{chapters/ch07_conclusion}
@@ -141,9 +138,9 @@ best performance was 0.944 average AUC (10 trials). To ensure the evaluation is 
 %	APPENDIX
 %-------------------------------------------------------------------------------
 
-%\begin{appendices}
-%\subfile{chapters/appendix}
-%\end{appendices}
+\begin{appendices}
+\subfile{chapters/appendix}
+\end{appendices}
 
 \backmatter
 

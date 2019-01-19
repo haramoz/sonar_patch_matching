@@ -120,7 +120,7 @@ not set. Please fix this.}
 
 {\normalsize Submitted to Hochschule Bonn-Rhein-Sieg,\\
 Department of Computer Science\\
-in partial fullfilment of the requirements for the degree\\
+in partial fulfillment of the requirements for the degree\\
 of Master of Science in Autonomous Systems}
 \vfill
 
